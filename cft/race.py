@@ -1,11 +1,15 @@
 import os
 import shutil
 import sys
+import json
 from colorama import init as colorama_init
 from termcolor import cprint
 
-
-TEMPLATE = r'path\_template.cpp'
+try:
+    config = json.load(open('cft_config.json'))
+    template = config['template']
+except FileNotFoundError:
+    template = ''
 
 
 def add_subcommand_race(subparsers):
@@ -16,7 +20,7 @@ def add_subcommand_race(subparsers):
 
 def race(args):
     colorama_init()
-    if not os.path.exists(TEMPLATE):
+    if not os.path.exists(template):
         cprint('Template does not exist', 'red', 'on_white')
         sys.exit()
     contest = args.contest
@@ -25,5 +29,5 @@ def race(args):
     for task in 'ABCDEFG':
         os.makedirs(task)
         os.chdir(task)
-        shutil.copy(TEMPLATE, f'{contest}{task}.cpp')
+        shutil.copy(template, f'{contest}{task}.cpp')
         os.chdir('..')
