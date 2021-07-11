@@ -5,10 +5,12 @@ import json
 from colorama import init as colorama_init
 from termcolor import cprint
 
+CONFIG_FILE = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'cft_config.json')
+
 try:
-    config = json.load(open('cft_config.json'))
-    template = config['template']
-except FileNotFoundError:
+    config_dict = json.load(open(CONFIG_FILE))
+    template = config_dict['template']
+except (FileNotFoundError, KeyError):
     template = ''
 
 
