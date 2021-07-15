@@ -2,6 +2,8 @@
 
 This tool is created for the purpose of participation in contests on Codeforces and for writing solutions for Codeforces problems more efficiently in general.
 
+Note: At the moment only C++ is supported.
+
 ## Usage
 
 `cft -h`
@@ -57,12 +59,15 @@ It is recommended that you then change the current working directory (`cd 1234`)
 
 ### Testing solution
 
-`cft test 1234A` downloads (if not yet downloaded) example test and check if it passes. Your solution should be already compiled.
+`cft test 1234A` downloads (if not yet downloaded) example test and checks if it passes. Your solution should be already compiled.
 
 If your current working directory is `some\path\1234` you can type just `cft test A`. 
 
+### Submitting solution
 
-_**Other functionalities are in progress and will be released in a few days (hopefully).**_
+`cft submit 1234A` submits solution and returns judgement verdict.
+
+If your current working directory is `some\path\1234` you can type just `cft submit A`. 
 
 ## Contribution & bugs
 
