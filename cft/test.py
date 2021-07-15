@@ -3,28 +3,21 @@ import sys
 import requests
 import bs4
 import subprocess
-from colorama import init as colorama_init
 from termcolor import cprint
 
 
-def add_subcommand_test(subparsers):
-    parser = subparsers.add_parser('test', help='test the solution file')
-    parser.add_argument('task', type=str, help='task id in the form "A" or "9999A"')
-    parser.set_defaults(func=test)
-
-
 def test(args):
-    colorama_init()
-    task = args.task
-    if len(task) <= 2:
-        task_letter = task
+    problem = args.problem
+    if len(problem) <= 2:
+        problem_letter = problem
         contest = os.path.basename(os.getcwd())
+        problem = contest + problem_letter
     else:
-        task_letter = task[4:]
-        contest = task[:4]
+        problem_letter = problem[4:]
+        contest = problem[:4]
 
-    if os.path.exists(task_letter):
-        os.chdir(task_letter)
+    if os.path.exists(problem_letter):
+        os.chdir(problem_letter)
 
     if not os.path.exists('in'):
         os.makedirs('in')
@@ -32,7 +25,7 @@ def test(args):
         os.makedirs('ans')
 
     if len(os.listdir('in')) == 0:
-        r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{task_letter}', )
+        r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{problem_letter}')
         try:
             r.raise_for_status()
         except requests.HTTPError:
@@ -48,17 +41,20 @@ def test(args):
             with open(f'ans\\{i}.out', 'w') as answer_file:
                 answer_file.write(test_ans.string.lstrip())
 
-    test_solution_file(contest + task_letter)
+    if not os.access(f'{problem}.exe', os.F_OK | os.X_OK) or os.access(f'{problem}', os.F_OK | os.X_OK):
+        cprint('Solution is not compiled', 'red', 'on_white')
+        sys.exit()
+    test_solution_files(problem)
 
 
-def test_solution_file(task):
+def test_solution_files(solution):
     i = 1
     while os.path.exists(f'in\\{i}.in'):
         with open(f'in\\{i}.in') as input_file:
             test_in = input_file.read()
         with open(f'ans\\{i}.out') as answer_file:
             test_ans = answer_file.read()
-        proc = subprocess.Popen([task], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        proc = subprocess.Popen([solution], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         try:
             test_out, test_err = proc.communicate(input=bytes(test_in, 'utf-8'), timeout=5)
         except subprocess.TimeoutExpired:

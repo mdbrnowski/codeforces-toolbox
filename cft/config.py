@@ -5,13 +5,7 @@ import getpass
 import keyring
 from colorama import init as colorama_init
 from termcolor import cprint
-
-CONFIG_FILE = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'cft_config.json')
-
-
-def add_subcommand_config(subparsers):
-    parser = subparsers.add_parser('config', help='change configuration of the cft')
-    parser.set_defaults(func=config)
+from .constants import CONFIG_FILE
 
 
 def config(args):

@@ -4,30 +4,22 @@ import requests
 import bs4
 import json
 import keyring
-from colorama import init as colorama_init
 from termcolor import cprint
-
-CONFIG_FILE = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), 'cft_config.json')
-
-
-def add_subcommand_submit(subparsers):
-    parser = subparsers.add_parser('submit', help='submit solution')
-    parser.add_argument('task', type=str, help='task id in the form "A" or "9999A"')
-    parser.set_defaults(func=submit)
+from .constants import CONFIG_FILE
 
 
 def submit(args):
-    colorama_init()
-    task = args.task
-    if len(task) <= 2:
-        task_letter = task
+    problem = args.problem
+    if len(problem) <= 2:
+        problem_letter = problem
         contest = os.path.basename(os.getcwd())
+        problem = contest + problem_letter
     else:
-        task_letter = task[4:]
-        contest = task[:4]
+        problem_letter = problem[4:]
+        contest = problem[:4]
 
-    if os.path.exists(task_letter):
-        os.chdir(task_letter)
+    if os.path.exists(problem_letter):
+        os.chdir(problem_letter)
 
     with requests.Session() as s:
         site = s.get('https://codeforces.com/enter')
@@ -60,9 +52,9 @@ def submit(args):
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
-        with open(os.path.join(os.getcwd(), f'{contest}{task_letter}.cpp')) as f:
+        with open(os.path.join(os.getcwd(), f'{contest}{problem_letter}.cpp')) as f:
             solution = f.read()
-        submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': task_letter, 'programTypeId': '54',
+        submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': problem_letter, 'programTypeId': '54',
                        'source': solution}
         submit_response = s.post(f'https://codeforces.com/contest/{contest}/submit', data=submit_data)
         try:
