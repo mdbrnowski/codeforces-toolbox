@@ -16,9 +16,6 @@ def test(args):
         problem_letter = problem[4:]
         contest = problem[:4]
 
-    if os.path.exists(problem_letter):
-        os.chdir(problem_letter)
-
     if not os.path.exists('in'):
         os.makedirs('in')
     if not os.path .exists('ans'):

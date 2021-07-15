@@ -42,20 +42,13 @@ then you can just type an integer (1-3) and change your template file, username 
 
 ```
 1234/
-  A/
-    1234A.cpp
-  B/
-    1234B.cpp
-  C/
-    1234C.cpp
-  D/
-    1234D.cpp
-  E/
-    1234E.cpp
-  F/
-    1234F.cpp
-  G/
-    1234G.cpp
+  1234A.cpp
+  1234B.cpp
+  1234C.cpp
+  1234D.cpp
+  1234E.cpp
+  1234F.cpp
+  1234G.cpp
 ```
 
 files 1234*X*.cpp are created by copying the previously specified template file.

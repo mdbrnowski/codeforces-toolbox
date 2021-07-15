@@ -18,9 +18,6 @@ def submit(args):
         problem_letter = problem[4:]
         contest = problem[:4]
 
-    if os.path.exists(problem_letter):
-        os.chdir(problem_letter)
-
     with requests.Session() as s:
         site = s.get('https://codeforces.com/enter')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')

@@ -13,14 +13,16 @@ except (FileNotFoundError, KeyError):
 
 
 def race(args):
+    contest = args.contest
     if not os.path.exists(template):
         cprint('Template does not exist', 'red', 'on_white')
         sys.exit()
-    contest = args.contest
     os.makedirs(contest)
     os.chdir(contest)
-    for problem_letter in 'ABCDEFG':
-        os.makedirs(problem_letter)
-        os.chdir(problem_letter)
+    for problem_letter in contest_letters(contest):
         shutil.copy(template, f'{contest}{problem_letter}.cpp')
-        os.chdir('..')
+
+
+def contest_letters (contest):
+    return 'ABCDEFG'
+    # TODO: make this work
