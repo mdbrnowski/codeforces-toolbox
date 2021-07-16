@@ -1,6 +1,8 @@
 import os
 import shutil
 import sys
+import requests
+import bs4
 import json
 from termcolor import cprint
 from .constants import CONFIG_FILE
@@ -23,6 +25,27 @@ def race(args):
         shutil.copy(template, f'{contest}{problem_letter}.cpp')
 
 
-def contest_letters (contest):
-    return 'ABCDEFG'
-    # TODO: make this work
+def contest_letters(contest):
+    r = requests.get(f'https://codeforces.com/contest/{contest}')
+    try:
+        r.raise_for_status()
+    except requests.HTTPError:
+        cprint('Invalid contest', 'red', 'on_white')
+        return contest_letters_default(contest)
+    soup = bs4.BeautifulSoup(r.text, 'html.parser')
+    letters = soup.select('table.problems tr:nth-child(n+2) td:first-child a')
+    if not letters:
+        cprint('Something went wrong while accessing problems', 'red', 'on_white')
+        return contest_letters_default(contest)
+    return [letter.text.strip() for letter in letters]
+
+
+def contest_letters_default(contest):
+    d = input('Do you want to create default A-G files? [y/n] ')
+    if d.lower() in ('y', 'yes'):
+        return list('ABCDEFG')
+    else:
+        print('Aborted')
+        os.chdir('..')
+        os.rmdir(contest)
+        sys.exit()
