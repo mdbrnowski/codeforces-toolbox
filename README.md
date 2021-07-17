@@ -6,19 +6,19 @@ Note: At the moment only C++ is supported.
 
 ## Usage
 
-`cft -h`
+`cft`
 
 ```
-usage: cft [-h] {race,submit,test,config} ...
+usage: cft [-h] {config,race,test,submit} ...
 
 Codeforces tool
 
 positional arguments:
-  {race,submit,test,config}
-    race                create folder and solution files based on the template
-    submit              submit solution
-    test                test the solution file
+  {config,race,test,submit}
     config              change configuration of the cft
+    race                create folder and solution files based on the template
+    test                test solution file
+    submit              submit solution
 
 optional arguments:
   -h, --help            show this help message and exit

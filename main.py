@@ -1,4 +1,6 @@
 import argparse
+import sys
+
 from colorama import init as colorama_init
 from cft.config import config
 from cft.race import race
@@ -27,6 +29,6 @@ submit_parser = subparsers.add_parser('submit', help='submit solution')
 submit_parser.add_argument('problem', type=str, help='problem id in the form "A" or "1234A"')
 submit_parser.set_defaults(func=submit)
 
-args = parser.parse_args()
+args = parser.parse_args(None if sys.argv[1:] else ['-h'])
 
 args.func(args)
