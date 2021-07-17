@@ -1,22 +1,16 @@
+import json
 import os
 import sys
-import requests
+
 import bs4
-import json
 import keyring
-from termcolor import cprint
-from .constants import CONFIG_FILE
+import requests
+
+from .constants import *
 
 
 def submit(args):
-    problem = args.problem
-    if len(problem) <= 2:
-        problem_letter = problem
-        contest = os.path.basename(os.getcwd())
-        problem = contest + problem_letter
-    else:
-        problem_letter = problem[4:]
-        contest = problem[:4]
+    contest, problem_letter = translate_problem_name(args.problem)
 
     with requests.Session() as s:
         site = s.get('https://codeforces.com/enter')
@@ -27,10 +21,11 @@ def submit(args):
             config_dict = json.load(open(CONFIG_FILE))
             username = config_dict['username']
         except FileNotFoundError:
-            cprint('Configuration file not found', 'red', 'on_white')
+            print_error('Configuration file has not been found.')
             sys.exit()
         except KeyError:
-            cprint('Specify your username first', 'red', 'on_white')
+            print_error('Specify your username first.')
+            sys.exit()
 
         password = keyring.get_password('codeforces-tool', username)
         login_data = {'csrf_token': csrf_token, 'action': 'enter', 'handleOrEmail': username, 'password': password}
@@ -40,10 +35,10 @@ def submit(args):
             if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
                 raise Exception('Invalid username or password')
         except requests.HTTPError:
-            cprint("Sorry, something went wrong while logging in", 'red', 'on_white')
+            print_error("Something went wrong while logging in.")
             sys.exit()
         except Exception as e:
-            cprint(e, 'red', 'on_white')
+            print_error(e)
             sys.exit()
 
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
@@ -57,9 +52,9 @@ def submit(args):
         try:
             submit_response.raise_for_status()
         except requests.HTTPError:
-            cprint("Sorry, something went wrong while submitting", 'red', 'on_white')
+            print_error("Something went wrong while submitting")
             sys.exit()
-        cprint('Solution has been submitted', 'green')
+        print('Solution has been submitted')
 
         print('Verdict :')
         # TODO

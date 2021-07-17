@@ -2,10 +2,11 @@ import argparse
 import sys
 
 from colorama import init as colorama_init
+
 from cft.config import config
 from cft.race import race
-from cft.test import test
 from cft.submit import submit
+from cft.test import test
 
 colorama_init()
 

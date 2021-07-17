@@ -1,25 +1,32 @@
-import os
-import shutil
-import sys
-import requests
-import bs4
 import json
-from termcolor import cprint
-from .constants import CONFIG_FILE
+import shutil
+
+import bs4
+import requests
+
+from .constants import *
 
 try:
     config_dict = json.load(open(CONFIG_FILE))
     template = config_dict['template']
-except (FileNotFoundError, KeyError):
-    template = ''
+except FileNotFoundError:
+    print_error('Configuration file has not been found.')
+    sys.exit()
+except KeyError:
+    print_error('Specify your template file first.')
+    sys.exit()
 
 
 def race(args):
     contest = args.contest
     if not os.path.exists(template):
-        cprint('Template does not exist', 'red', 'on_white')
+        print_error('Template file does not exist.')
         sys.exit()
-    os.makedirs(contest)
+    try:
+        os.makedirs(contest)
+    except OSError:
+        print_error(f'Folder {contest} already exists.')
+        sys.exit()
     os.chdir(contest)
     for problem_letter in contest_letters(contest):
         shutil.copy(template, f'{contest}{problem_letter}.cpp')
@@ -29,14 +36,13 @@ def contest_letters(contest):
     r = requests.get(f'https://codeforces.com/contest/{contest}')
     try:
         r.raise_for_status()
+        if len(r.history):
+            raise requests.HTTPError
     except requests.HTTPError:
-        cprint('Invalid contest', 'red', 'on_white')
+        print_warning('Something went wrong while accessing problems')
         return contest_letters_default(contest)
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
     letters = soup.select('table.problems tr:nth-child(n+2) td:first-child a')
-    if not letters:
-        cprint('Something went wrong while accessing problems', 'red', 'on_white')
-        return contest_letters_default(contest)
     return [letter.text.strip() for letter in letters]
 
 

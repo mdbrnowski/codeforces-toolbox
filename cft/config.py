@@ -1,22 +1,19 @@
-import os
-import sys
-import json
 import getpass
+import json
+
 import keyring
-from colorama import init as colorama_init
-from termcolor import cprint
-from .constants import CONFIG_FILE
+
+from .constants import *
 
 
 def config(args):
-    colorama_init()
     print('Choose one of the following (type an integer):',
           '  1. change the template file',
           '  2. change username and password',
           '  3. change password',
           sep='\n')
     while (choice := input()) not in {'1', '2', '3'}:
-        cprint('Type an integer 1, 2 or 3:', 'red', 'on_white')
+        print_warning('Type an integer 1, 2 or 3:')
     choice = int(choice)
 
     try:
@@ -32,7 +29,7 @@ def config(args):
         try:
             username = config_dict['username']
         except KeyError:
-            cprint('First enter your username', 'red', 'on_white')
+            print_error('First enter your username.')
             sys.exit()
         password = getpass.getpass('Password: ')
         keyring.set_password('codeforces-tool', username, password)
