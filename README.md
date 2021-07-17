@@ -61,7 +61,9 @@ It is recommended that you then change the current working directory (`cd 1234`)
 
 `cft test 1234A` downloads (if not yet downloaded) example test and checks if it passes. Your solution should be already compiled.
 
-If your current working directory is `some\path\1234` you can type just `cft test A`. 
+If your current working directory is `some\path\1234` you can type just `cft test A`.
+
+Test will be downloaded only if directories `\in` and `\ans` are empty or do not exist. You can force download test from Codeforces by using `cft test A -d` or `cft test A --download`.
 
 ### Submitting solution
 

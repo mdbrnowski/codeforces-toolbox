@@ -20,6 +20,7 @@ race_parser.set_defaults(func=race)
 
 test_parser = subparsers.add_parser('test', help='test solution file')
 test_parser.add_argument('problem', type=str, help='problem id in the form "A" or "1234A"')
+test_parser.add_argument('-d', '--download', action='store_true', help='force download test from CF')
 test_parser.set_defaults(func=test)
 
 submit_parser = subparsers.add_parser('submit', help='submit solution')

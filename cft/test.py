@@ -18,8 +18,14 @@ def test(args):
 
     if not os.path.exists('in'):
         os.makedirs('in')
-    if not os.path .exists('ans'):
+    if not os.path.exists('ans'):
         os.makedirs('ans')
+
+    if args.download:
+        for file in os.listdir('in'):
+            os.remove(f'in\\{file}')
+        for file in os.listdir('ans'):
+            os.remove(f'ans\\{file}')
 
     if len(os.listdir('in')) == 0:
         r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{problem_letter}')
