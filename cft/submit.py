@@ -1,6 +1,5 @@
 import json
-import os
-import sys
+import time
 
 import bs4
 import keyring
@@ -33,7 +32,7 @@ def submit(args):
         try:
             login_response.raise_for_status()
             if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
-                raise Exception('Invalid username or password')
+                raise Exception('Invalid username or password.')
         except requests.HTTPError:
             print_error("Something went wrong while logging in.")
             sys.exit()
@@ -52,9 +51,19 @@ def submit(args):
         try:
             submit_response.raise_for_status()
         except requests.HTTPError:
-            print_error("Something went wrong while submitting")
+            print_error("Something went wrong while submitting.")
             sys.exit()
-        print('Solution has been submitted')
+        print('Solution has been submitted.')
 
-        print('Verdict :')
-        # TODO
+        print('Verdict:', end=' ')
+        while True:
+            site = s.get(f'https://codeforces.com/submissions/{username}')
+            soup = bs4.BeautifulSoup(site.content, 'html.parser')
+            v = soup.select_one('div.datatable table tr:nth-child(2) td.status-verdict-cell').text.strip()
+            if not (v.startswith('Running') or v == 'In queue'):
+                if v == 'Accepted':
+                    print_good(v)
+                else:
+                    print_bad(v)
+                break
+            time.sleep(2)
