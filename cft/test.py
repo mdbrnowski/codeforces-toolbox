@@ -1,6 +1,4 @@
-import os
 import subprocess
-import sys
 
 import bs4
 import requests
@@ -38,10 +36,10 @@ def test(args):
             with open(f'in\\{i}.in', 'w') as input_file:
                 input_file.write(test_in.string.lstrip())
             with open(f'ans\\{i}.out', 'w') as answer_file:
-                answer_file.write(test_ans.string.lstrip())
+                answer_file.write(test_ans.string.strip())
 
-    if not os.access(f'{problem}.exe', os.F_OK | os.X_OK) or os.access(f'{problem}', os.F_OK | os.X_OK):
-        print_error('Solution is not compiled')
+    if compile_solution(problem).returncode != 0:
+        print_error('Solution has not been compiled.')
         sys.exit()
 
     i = 1
@@ -50,24 +48,30 @@ def test(args):
         i += 1
 
 
+def compile_solution(problem):
+    return subprocess.run(f'g++ -Wall -O1 {problem}.cpp -o {problem}')
+
+
 def test_solution_file(solution, i):
     with open(f'in\\{i}.in') as input_file:
         test_in = input_file.read()
     with open(f'ans\\{i}.out') as answer_file:
         test_ans = answer_file.read()
-    proc = subprocess.Popen([solution], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+
     try:
-        test_out, test_err = proc.communicate(input=bytes(test_in, 'utf-8'), timeout=5)
+        r = subprocess.run(solution, input=test_in, capture_output=True, timeout=5, encoding='utf-8')
+        test_out = r.stdout.strip()
+        test_err = r.stderr.strip()
     except subprocess.TimeoutExpired:
-        proc.kill()
         print_bad('Execution time exceeded 5 seconds')
         return
-
-    test_out = test_out.decode('utf-8').lstrip()
 
     if test_out.split() == test_ans.split():    # delete every whitespace
         print_good('Test passed')
     else:
         print_bad('Test did not pass')
         print('Program output:', test_out, sep='\n')
-        print('Answer:', test_ans, sep='\n')
+        if test_err:
+            print('\nProgram error:', test_err, sep='\n')
+        print('\nAnswer:', test_ans, sep='\n')
+
