@@ -1,3 +1,4 @@
+import json
 import subprocess
 
 import bs4
@@ -41,6 +42,8 @@ def test(args):
     if compile_solution(problem).returncode != 0:
         print_error('Solution has not been compiled.')
         sys.exit()
+    else:
+        print('Solution has been compiled.')
 
     i = 1
     while os.path.exists(f'in\\{i}.in'):
@@ -49,7 +52,21 @@ def test(args):
 
 
 def compile_solution(problem):
-    return subprocess.run(f'g++ -Wall -O1 {problem}.cpp -o {problem}')
+    try:
+        config_dict = json.load(open(CONFIG_FILE))
+        compile_command = config_dict['compile']
+    except FileNotFoundError:
+        print_error('Configuration file has not been found.')
+        sys.exit()
+    except KeyError:
+        print_error('Specify compile command first.')
+        sys.exit()
+
+    try:
+        return subprocess.run(f'{compile_command} {problem}.cpp -o {problem}')
+    except OSError:
+        print_error('Compile command is wrong or compiler is not installed.')
+        sys.exit()
 
 
 def test_solution_file(solution, i):
