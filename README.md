@@ -35,8 +35,9 @@ Choose one of the following (type an integer):
   1. change the template file
   2. change username and password
   3. change password
+  4. set compile command
 ```
-then you can just type an integer (1-3) and change your template file, username or password.
+then you can just type an integer (1-4) and change your template file, username, password or compile command.
 
 ### Creating structure for a contest
 
@@ -59,7 +60,7 @@ It is recommended that you then change the current working directory (`cd 1234`)
 
 ### Testing solution
 
-`cft test 1234A` downloads (if not yet downloaded) example test and checks if it passes. Your solution should be already compiled.
+`cft test 1234A` compiles your solution, downloads (if not yet downloaded) example test and checks if it passes.
 
 If your current working directory is `some\path\1234` you can type just `cft test A`.
 
