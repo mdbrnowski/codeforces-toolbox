@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='codeforces-toolbox',
-    version='0.1.0',
+    version='1.0.0',
     description='Codeforces CLI that makes writing contests more efficient.',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -25,7 +25,7 @@ setup(
                  'Operating System :: POSIX :: Linux',
                  'Programming Language :: Python',
                  'Topic :: Terminals'],
-    license='MIT License',
+    license='MIT',
     keywords=['cli', 'competitive-programming', 'codeforces'],
     install_requires=requirements,
     python_requires='>=3.7',

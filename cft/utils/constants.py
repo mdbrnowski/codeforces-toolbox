@@ -4,7 +4,7 @@ import sys
 
 from sty import fg, rs
 
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cft_config.json')
+CONFIG_FILE = os.path.join(os.path.expanduser("~"), '.codeforces-toolbox', 'cft_config.json')
 
 error_style = fg.red
 warning_style = fg.yellow

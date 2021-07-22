@@ -17,9 +17,9 @@ def test(args):
 
     if args.download:
         for file in os.listdir('in'):
-            os.remove(f'in\\{file}')
+            os.remove(os.path.join('in', file))
         for file in os.listdir('ans'):
-            os.remove(f'ans\\{file}')
+            os.remove(os.path.join('ans', file))
 
     if len(os.listdir('in')) == 0:
         r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{problem_letter}')
@@ -33,9 +33,9 @@ def test(args):
         tests_input = soup.select('div.sample-test div.input pre')
         tests_answer = soup.select('div.sample-test div.output pre')
         for i, (test_in, test_ans) in enumerate(zip(tests_input, tests_answer), start=1):
-            with open(f'in\\{i}.in', 'w') as input_file:
+            with open(os.path.join('in', f'{i}.in'), 'w') as input_file:
                 input_file.write(test_in.string.lstrip())
-            with open(f'ans\\{i}.out', 'w') as answer_file:
+            with open(os.path.join('ans', f'{i}.out'), 'w') as answer_file:
                 answer_file.write(test_ans.string.strip())
 
     if compile_solution(problem).returncode != 0:
@@ -45,28 +45,28 @@ def test(args):
         print('Solution has been compiled.')
 
     i = 1
-    while os.path.exists(f'in\\{i}.in'):
+    while os.path.exists(os.path.join('in', f'{i}.in')):
         test_solution_file(problem, i)
         i += 1
 
 
 def compile_solution(problem):
-    compile_command = get_compile_command()
+    compile_command = get_compile_command().split(' ')
     try:
-        return subprocess.run(f'{compile_command} {problem}.cpp -o {problem}')
+        return subprocess.run([*compile_command, f'{problem}.cpp', '-o', problem])
     except OSError:
         print_error('Compile command is wrong or compiler is not installed.')
         sys.exit()
 
 
 def test_solution_file(solution, i):
-    with open(f'in\\{i}.in') as input_file:
+    with open(os.path.join('in', f'{i}.in')) as input_file:
         test_in = input_file.read()
-    with open(f'ans\\{i}.out') as answer_file:
+    with open(os.path.join('ans', f'{i}.out')) as answer_file:
         test_ans = answer_file.read()
 
     try:
-        r = subprocess.run(solution, input=test_in, capture_output=True, timeout=5, encoding='utf-8')
+        r = subprocess.run('./' + solution, input=test_in, capture_output=True, timeout=5, encoding='utf-8')
         test_out = r.stdout.strip()
         test_err = r.stderr.strip()
     except subprocess.TimeoutExpired:

@@ -1,8 +1,9 @@
 # Codeforces Toolbox
 
-![Last commit](https://img.shields.io/github/last-commit/mdbrnowski/codeforces-toolbox)
-![Issues](https://img.shields.io/github/issues/mdbrnowski/codeforces-toolbox)
-![License](https://img.shields.io/github/license/mdbrnowski/codeforces-toolbox)
+[![Status PyPI](https://img.shields.io/pypi/status/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
+[![Version PyPI](https://img.shields.io/pypi/v/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
+[![Last commit](https://img.shields.io/github/last-commit/mdbrnowski/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
+[![License PyPI](https://img.shields.io/pypi/l/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
 
 This tool is a CLI (Command Line Interface) that makes writing [Codeforces](https://codeforces.com/) contests more efficient.
 
@@ -52,19 +53,19 @@ It is recommended that you then change the current working directory (`cd 1234`)
 
 `cft test 1234A` compiles your solution, downloads (if not yet downloaded) example test and checks if it passes.
 
-If your current working directory is `some\path\1234` you can type just `cft test A`.
+If your current working directory is `some/path/1234` you can type just `cft test A`.
 
-Test will be downloaded only if directories `\in` and `\ans` are empty or do not exist. You can force download test from Codeforces by using `cft test A -d` or `cft test A --download`.
+Test will be downloaded only if directories `/in` and `/ans` are empty or do not exist. You can force download test from Codeforces by using `cft test A -d` or `cft test A --download`.
 
 ### Submitting solution
 
 `cft submit 1234A` submits solution and returns judgement verdict.
 
-If your current working directory is `some\path\1234` you can type just `cft submit A`. 
+If your current working directory is `some/path/1234` you can type just `cft submit A`. 
 
 ## Installation
 
-Please first install Python 3.7 or higher from [python.org](https://www.python.org/downloads/).
+Please first install Python 3.7 or higher from [python.org](https://www.python.org/downloads/). During installation you should check the option *'Add Python to PATH'*.
 
 Then just copy and paste in your terminal
 ```commandline

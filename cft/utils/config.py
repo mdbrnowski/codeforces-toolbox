@@ -16,12 +16,14 @@ def config(args):
         print_warning('Type an integer 1, 2, 3 or 4:')
     choice = int(choice)
 
+    if not os.path.exists(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox')):
+        os.makedirs(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'))
+
     try:
         config_dict = json.load(open(CONFIG_FILE))
     except (FileNotFoundError, json.decoder.JSONDecodeError):
         config_dict = dict()
 
-    print(CONFIG_FILE)
     if choice == 1:
         config_dict['template'] = input('Path to the template: ')
     if choice == 2:
