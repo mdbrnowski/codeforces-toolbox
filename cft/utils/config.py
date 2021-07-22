@@ -1,5 +1,4 @@
 import getpass
-import json
 
 import keyring
 
@@ -19,9 +18,10 @@ def config(args):
 
     try:
         config_dict = json.load(open(CONFIG_FILE))
-    except FileNotFoundError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         config_dict = dict()
 
+    print(CONFIG_FILE)
     if choice == 1:
         config_dict['template'] = input('Path to the template: ')
     if choice == 2:
@@ -33,7 +33,7 @@ def config(args):
             print_error('First enter your username.')
             sys.exit()
         password = getpass.getpass('Password: ')
-        keyring.set_password('codeforces-tool', username, password)
+        keyring.set_password('codeforces-toolbox', username, password)
     if choice == 4:
         print('Set compile command, e.g. `g++ -Wall -O1`.\nIf you do not want to compile, just press enter.')
         config_dict['compile'] = input('Compile command: ')

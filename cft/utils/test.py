@@ -1,4 +1,3 @@
-import json
 import subprocess
 
 import bs4
@@ -52,16 +51,7 @@ def test(args):
 
 
 def compile_solution(problem):
-    try:
-        config_dict = json.load(open(CONFIG_FILE))
-        compile_command = config_dict['compile']
-    except FileNotFoundError:
-        print_error('Configuration file has not been found.')
-        sys.exit()
-    except KeyError:
-        print_error('Specify compile command first.')
-        sys.exit()
-
+    compile_command = get_compile_command()
     try:
         return subprocess.run(f'{compile_command} {problem}.cpp -o {problem}')
     except OSError:
@@ -91,4 +81,3 @@ def test_solution_file(solution, i):
         if test_err:
             print('\nProgram error:', test_err, sep='\n')
         print('\nAnswer:', test_ans, sep='\n')
-

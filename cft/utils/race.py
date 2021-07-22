@@ -1,4 +1,3 @@
-import json
 import shutil
 
 import bs4
@@ -6,19 +5,10 @@ import requests
 
 from .constants import *
 
-try:
-    config_dict = json.load(open(CONFIG_FILE))
-    template = config_dict['template']
-except FileNotFoundError:
-    print_error('Configuration file has not been found.')
-    sys.exit()
-except KeyError:
-    print_error('Specify your template file first.')
-    sys.exit()
-
 
 def race(args):
     contest = args.contest
+    template = get_template()
     if not os.path.exists(template):
         print_error('Template file does not exist.')
         sys.exit()

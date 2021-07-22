@@ -1,4 +1,3 @@
-import json
 import time
 
 import bs4
@@ -15,18 +14,8 @@ def submit(args):
         site = s.get('https://codeforces.com/enter')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
-
-        try:
-            config_dict = json.load(open(CONFIG_FILE))
-            username = config_dict['username']
-        except FileNotFoundError:
-            print_error('Configuration file has not been found.')
-            sys.exit()
-        except KeyError:
-            print_error('Specify your username first.')
-            sys.exit()
-
-        password = keyring.get_password('codeforces-tool', username)
+        username = get_username()
+        password = keyring.get_password('codeforces-toolbox', username)
         login_data = {'csrf_token': csrf_token, 'action': 'enter', 'handleOrEmail': username, 'password': password}
         login_response = s.post('https://codeforces.com/enter', data=login_data)
         try:
