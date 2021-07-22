@@ -68,7 +68,7 @@ Please first install Python 3.7 or higher from [python.org](https://www.python.o
 
 Then just copy and paste in your terminal
 ```commandline
-pip install https://github.com/mdbrnowski/codeforces-toolbox
+pip install codeforces-toolbox
 ```
 
 ## Contribution & bugs
