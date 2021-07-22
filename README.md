@@ -1,32 +1,22 @@
-# Codeforces tool
+# Codeforces Toolbox
 
-This tool is created for the purpose of participation in contests on Codeforces and for writing solutions for Codeforces problems more efficiently in general.
+![Last commit](https://img.shields.io/github/last-commit/mdbrnowski/codeforces-toolbox)
+![Issues](https://img.shields.io/github/issues/mdbrnowski/codeforces-toolbox)
+![License](https://img.shields.io/github/license/mdbrnowski/codeforces-toolbox)
 
-Note: At the moment only C++ is supported.
+This tool is a CLI (Command Line Interface) that makes writing [Codeforces](https://codeforces.com/) contests more efficient.
 
-## Usage
+***Note***: At the moment only C++ is supported.
 
-`cft`
+## Features
 
-```
-usage: cft [-h] {config,race,test,submit} ...
+* Create files based on the specified template. These files will be named appropriately for the contest, for example 1000A, 1000B1, 1000B2, 1000C.
+* Download sample test from Codeforces.
+* Compile solution and test it.
+* Submit solution and get the verdict.
 
-Codeforces tool
 
-positional arguments:
-  {config,race,test,submit}
-    config              change configuration of the cft
-    race                create folder and solution files based on the template
-    test                test solution file
-    submit              submit solution
-
-optional arguments:
-  -h, --help            show this help message and exit
-
-Wish you high ratings!
-```
-
-### Template, login, password
+### Template, login, password, compilation command
 
 `cft config`
 
@@ -44,14 +34,14 @@ then you can just type an integer (1-4) and change your template file, username,
 `cft race 1234` creates the following directory structure:
 
 ```
-1234/
-  1234A.cpp
-  1234B.cpp
-  1234C.cpp
-  1234D.cpp
-  1234E.cpp
-  1234F.cpp
-  1234G.cpp
+1234
+├─ 1234A.cpp
+├─ 1234B.cpp
+├─ 1234C.cpp
+├─ 1234D.cpp
+├─ 1234E.cpp
+├─ 1234F.cpp
+├─ 1234G.cpp
 ```
 
 files 1234*X*.cpp are created by copying the previously specified template file.
@@ -71,6 +61,15 @@ Test will be downloaded only if directories `\in` and `\ans` are empty or do not
 `cft submit 1234A` submits solution and returns judgement verdict.
 
 If your current working directory is `some\path\1234` you can type just `cft submit A`. 
+
+## Installation
+
+Please first install Python 3.7 or higher from [python.org](https://www.python.org/downloads/).
+
+Then just copy and paste in your terminal
+```commandline
+pip install https://github.com/mdbrnowski/codeforces-toolbox
+```
 
 ## Contribution & bugs
 
