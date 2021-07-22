@@ -1,5 +1,5 @@
-colorama~=0.4.3
-keyring~=23.0.1
-requests~=2.23.0
-beautifulsoup4~=4.9.1
-sty~=1.0.0rc1
+colorama>=0.4.3
+keyring>=23.0.1
+requests>=2.23.0
+beautifulsoup4>=4.9.1
+sty>=1.0.0rc1
