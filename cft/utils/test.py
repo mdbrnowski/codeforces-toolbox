@@ -26,7 +26,7 @@ def test(args):
         try:
             r.raise_for_status()
         except requests.HTTPError:
-            print_error("Something went wrong while downloading tests")
+            print(error_style("Something went wrong while downloading tests"))
             sys.exit()
 
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
@@ -39,7 +39,7 @@ def test(args):
                 answer_file.write(test_ans.string.strip())
 
     if compile_solution(problem).returncode != 0:
-        print_error('Solution has not been compiled.')
+        print(error_style('Solution has not been compiled.'))
         sys.exit()
     else:
         print('Solution has been compiled.')
@@ -55,7 +55,7 @@ def compile_solution(problem):
     try:
         return subprocess.run([*compile_command, f'{problem}.cpp', '-o', problem])
     except OSError:
-        print_error('Compile command is wrong or compiler is not installed.')
+        print(error_style('Compile command is wrong or compiler is not installed.'))
         sys.exit()
 
 
@@ -70,13 +70,13 @@ def test_solution_file(solution, i):
         test_out = r.stdout.strip()
         test_err = r.stderr.strip()
     except subprocess.TimeoutExpired:
-        print_bad('Execution time exceeded 5 seconds')
+        print(negative_style('Execution time exceeded 5 seconds'))
         return
 
     if test_out.split() == test_ans.split():    # delete every whitespace
-        print_good('Test passed')
+        print(positive_style('Test passed'))
     else:
-        print_bad('Test did not pass')
+        print(negative_style('Test did not pass'))
         print('Program output:', test_out, sep='\n')
         if test_err:
             print('\nProgram error:', test_err, sep='\n')

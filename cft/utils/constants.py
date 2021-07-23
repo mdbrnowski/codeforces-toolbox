@@ -6,26 +6,25 @@ from sty import fg, rs
 
 CONFIG_FILE = os.path.join(os.path.expanduser("~"), '.codeforces-toolbox', 'cft_config.json')
 
-error_style = fg.red
-warning_style = fg.yellow
-good_style = fg.li_green
-bad_style = fg.yellow
+
+def error_style(message):
+    return fg(196) + message + rs.all   # red
 
 
-def print_error(message):
-    print(error_style + message + rs.all)
+def warning_style(message):
+    return fg(220) + message + rs.all   # yellow
 
 
-def print_warning(message):
-    print(warning_style + message + rs.all)
+def positive_style(message):
+    return fg(70) + message + rs.all    # green
 
 
-def print_good(message):
-    print(good_style + message + rs.all)
+def negative_style(message):
+    return fg(208) + message + rs.all   # orange
 
 
-def print_bad(message):
-    print(bad_style + message + rs.all)
+def neutral_style(message):
+    return fg(69) + message + rs.all    # blue
 
 
 def translate_problem_name(problem):
@@ -43,10 +42,10 @@ def get_template():
         config_dict = json.load(open(CONFIG_FILE))
         template = config_dict['template']
     except FileNotFoundError:
-        print_error('Configuration file has not been found.')
+        print(error_style('Configuration file has not been found.'))
         sys.exit()
     except KeyError:
-        print_error('Specify your template file first.')
+        print(error_style('Specify your template file first.'))
         sys.exit()
     return template
 
@@ -56,10 +55,10 @@ def get_username():
         config_dict = json.load(open(CONFIG_FILE))
         username = config_dict['username']
     except FileNotFoundError:
-        print_error('Configuration file has not been found.')
+        print(error_style('Configuration file has not been found.'))
         sys.exit()
     except KeyError:
-        print_error('Specify your username first.')
+        print(error_style('Specify your username first.'))
         sys.exit()
     return username
 
@@ -69,9 +68,9 @@ def get_compile_command():
         config_dict = json.load(open(CONFIG_FILE))
         compile_command = config_dict['compile']
     except FileNotFoundError:
-        print_error('Configuration file has not been found.')
+        print(error_style('Configuration file has not been found.'))
         sys.exit()
     except KeyError:
-        print_error('Specify compile command first.')
+        print(error_style('Specify compile command first.'))
         sys.exit()
     return compile_command

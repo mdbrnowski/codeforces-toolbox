@@ -10,12 +10,12 @@ def race(args):
     contest = args.contest
     template = get_template()
     if not os.path.exists(template):
-        print_error('Template file does not exist.')
+        print(error_style('Template file does not exist.'))
         sys.exit()
     try:
         os.makedirs(contest)
     except OSError:
-        print_error(f'Folder {contest} already exists.')
+        print(error_style(f'Folder {contest} already exists.'))
         sys.exit()
     os.chdir(contest)
     for problem_letter in contest_letters(contest):
@@ -29,7 +29,7 @@ def contest_letters(contest):
         if len(r.history):
             raise requests.HTTPError
     except requests.HTTPError:
-        print_warning('Something went wrong while accessing problems')
+        print(warning_style('Something went wrong while accessing problems'))
         return contest_letters_default(contest)
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
     letters = soup.select('table.problems tr:nth-child(n+2) td:first-child a')

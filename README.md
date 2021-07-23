@@ -35,14 +35,14 @@ then you can just type an integer (1-4) and change your template file, username,
 `cft race 1234` creates the following directory structure:
 
 ```
-1234
-├─ 1234A.cpp
-├─ 1234B.cpp
-├─ 1234C.cpp
-├─ 1234D.cpp
-├─ 1234E.cpp
-├─ 1234F.cpp
-├─ 1234G.cpp
+1234/
+  1234A.cpp
+  1234B.cpp
+  1234C.cpp
+  1234D.cpp
+  1234E.cpp
+  1234F.cpp
+  1234G.cpp
 ```
 
 files 1234*X*.cpp are created by copying the previously specified template file.

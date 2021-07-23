@@ -1,19 +1,17 @@
 #!/usr/bin/env python
 
 import argparse
-import sys
-
-from colorama import init as colorama_init
 
 from cft.utils.config import config
 from cft.utils.race import race
 from cft.utils.submit import submit
 from cft.utils.test import test
+from cft.utils.constants import *
 
 
 def main():
-    colorama_init()
-    parser = argparse.ArgumentParser(prog='cft', description='---- Codeforces toolbox ----',
+    os.system('')    # enable colors in Windows cmd
+    parser = argparse.ArgumentParser(prog='cft', description=neutral_style('----- Codeforces toolbox -----'),
                                      epilog='Wish you high ratings!')
     subparsers = parser.add_subparsers()
 

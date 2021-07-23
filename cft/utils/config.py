@@ -1,4 +1,5 @@
 import getpass
+import sys
 
 import keyring
 
@@ -12,9 +13,13 @@ def config(args):
           '  3. change password',
           '  4. set compile command',
           sep='\n')
-    while (choice := input()) not in {'1', '2', '3', '4'}:
-        print_warning('Type an integer 1, 2, 3 or 4:')
-    choice = int(choice)
+    try:
+        while (choice := input()) not in {'1', '2', '3', '4'}:
+            print(warning_style('Type an integer 1, 2, 3 or 4:'))
+        choice = int(choice)
+    except KeyboardInterrupt:
+        print(warning_style('Aborted.'))
+        sys.exit()
 
     if not os.path.exists(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox')):
         os.makedirs(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'))
@@ -32,7 +37,7 @@ def config(args):
         try:
             username = config_dict['username']
         except KeyError:
-            print_error('First enter your username.')
+            print(error_style('First enter your username.'))
             sys.exit()
         password = getpass.getpass('Password: ')
         keyring.set_password('codeforces-toolbox', username, password)

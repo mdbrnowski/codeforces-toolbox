@@ -23,10 +23,10 @@ def submit(args):
             if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
                 raise Exception('Invalid username or password.')
         except requests.HTTPError:
-            print_error("Something went wrong while logging in.")
+            print(error_style("Something went wrong while logging in."))
             sys.exit()
         except Exception as e:
-            print_error(e)
+            print(error_style(e))
             sys.exit()
 
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
@@ -40,7 +40,7 @@ def submit(args):
         try:
             submit_response.raise_for_status()
         except requests.HTTPError:
-            print_error("Something went wrong while submitting.")
+            print(error_style("Something went wrong while submitting."))
             sys.exit()
         print('Solution has been submitted.')
 
@@ -51,8 +51,8 @@ def submit(args):
             v = soup.select_one('div.datatable table tr:nth-child(2) td.status-verdict-cell').text.strip()
             if not (v.startswith('Running') or v == 'In queue'):
                 if v == 'Accepted':
-                    print_good(v)
+                    print(positive_style(v))
                 else:
-                    print_bad(v)
+                    print(negative_style(v))
                 break
             time.sleep(2)
