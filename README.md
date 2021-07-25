@@ -67,9 +67,14 @@ If your current working directory is `some/path/1234` you can type just `cft sub
 
 Please first install Python 3.7 or higher from [python.org](https://www.python.org/downloads/). During installation you should check the option *'Add Python to PATH'*.
 
-Then just copy and paste in your terminal
+Then just copy and paste in your terminal this:
 ```commandline
 pip install codeforces-toolbox
+```
+
+If you want to update the package, you can do this by:
+```commandline
+pip install --upgrade codeforces-toolbox
 ```
 
 ## Contribution & bugs
