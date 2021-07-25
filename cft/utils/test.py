@@ -27,7 +27,7 @@ def test(args):
         try:
             r.raise_for_status()
         except requests.HTTPError:
-            print(error_style("Something went wrong while downloading tests"))
+            print(error_style('Something went wrong while downloading tests'))
             sys.exit()
 
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
@@ -59,6 +59,8 @@ def compile_solution(problem, compile_command):
         return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
     except subprocess.TimeoutExpired:
         print(error_style('Compilation time has exceeded 10 seconds.'))
+        print('Make sure you are using appropriate compile and run commands for your language.')
+        sys.exit()
     except OSError:
         print(error_style('Compile command is wrong or compiler is not installed.'))
         sys.exit()
