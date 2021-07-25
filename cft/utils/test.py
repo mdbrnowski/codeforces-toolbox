@@ -56,7 +56,9 @@ def test(args):
 def compile_solution(problem, compile_command):
     language = get_language()
     try:
-        return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem])
+        return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
+    except subprocess.TimeoutExpired:
+        print(error_style('Compilation time has exceeded 10 seconds.'))
     except OSError:
         print(error_style('Compile command is wrong or compiler is not installed.'))
         sys.exit()
@@ -85,7 +87,7 @@ def test_solution(problem, i):
         print('If you are using a interpreted language (' + neutral_style('Python') + '), set run command.')
         sys.exit()
     except subprocess.TimeoutExpired:
-        print(negative_style('Execution time exceeded 10 seconds'))
+        print(negative_style('Execution time exceeded 10 seconds.'))
         return
 
     if test_out.split() == test_ans.split():    # delete every whitespace
