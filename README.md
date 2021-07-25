@@ -7,7 +7,7 @@
 
 This tool is a CLI (Command Line Interface) that makes writing [Codeforces](https://codeforces.com/) contests more efficient.
 
-***Note***: At the moment only C++ is supported.
+***Note:*** At the moment only C++ and C are supported.
 
 ## Features
 
@@ -32,7 +32,7 @@ then you can just type an integer (1-4) and change your template file, username,
 
 ### Creating structure for a contest
 
-`cft race 1234` creates the following directory structure:
+`cft race 1234` creates the following directory structure (provided that your programming language is C++):
 
 ```
 1234/

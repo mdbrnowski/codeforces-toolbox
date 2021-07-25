@@ -32,9 +32,10 @@ def submit(args):
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
-        with open(os.path.join(os.getcwd(), f'{contest}{problem_letter}.cpp')) as f:
+        language = get_language()
+        with open(os.path.join(os.getcwd(), f'{contest}{problem_letter}.{language.ext}')) as f:
             solution = f.read()
-        submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': problem_letter, 'programTypeId': '54',
+        submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': problem_letter, 'programTypeId': language.n,
                        'source': solution}
         submit_response = s.post(f'https://codeforces.com/contest/{contest}/submit', data=submit_data)
         try:

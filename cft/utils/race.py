@@ -7,6 +7,7 @@ from .constants import *
 
 
 def race(args):
+    language = get_language()
     contest = args.contest
     template = get_template()
     if not os.path.exists(template):
@@ -19,7 +20,7 @@ def race(args):
         sys.exit()
     os.chdir(contest)
     for problem_letter in contest_letters(contest):
-        shutil.copy(template, f'{contest}{problem_letter}.cpp')
+        shutil.copy(template, f'{contest}{problem_letter}.{language.ext}')
 
 
 def contest_letters(contest):

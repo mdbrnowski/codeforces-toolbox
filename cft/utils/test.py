@@ -51,9 +51,10 @@ def test(args):
 
 
 def compile_solution(problem):
+    language = get_language()
     compile_command = get_compile_command().split(' ')
     try:
-        return subprocess.run([*compile_command, f'{problem}.cpp', '-o', problem])
+        return subprocess.run([*compile_command, f'{problem}.{language.ext}', '-o', problem])
     except OSError:
         print(error_style('Compile command is wrong or compiler is not installed.'))
         sys.exit()
