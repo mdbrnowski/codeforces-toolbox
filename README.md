@@ -17,7 +17,7 @@ This tool is a CLI (Command Line Interface) that makes writing [Codeforces](http
 * Submit solution and get the verdict.
 
 
-### Template, login, password, compilation command
+### Template, username, password, language, compilation command
 
 `cft config`
 
@@ -26,9 +26,10 @@ Choose one of the following (type an integer):
   1. change the template file
   2. change username and password
   3. change password
-  4. set compile command
+  4. change language
+  5. set compile command
 ```
-then you can just type an integer (1-4) and change your template file, username, password or compile command.
+then you can just type an integer (1-5) and change your template file, username, password, language or compilation command.
 
 ### Creating structure for a contest
 

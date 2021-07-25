@@ -21,7 +21,11 @@ LANGUAGES = {
     '4': Language(61, 'GNU G++17 (64 bit)', 'cpp'),
     '5': Language(2,  'Microsoft Visual C++ 2010', 'cpp'),
     '6': Language(59, 'Microsoft Visual C++ 2017', 'cpp'),
-    '7': Language(43, 'GNU GCC C11', 'c')
+    '7': Language(43, 'GNU GCC C11', 'c'),
+    '8': Language(7,  'Python 2.7', 'py'),
+    '9': Language(31, 'Python 3.8', 'py'),
+    '10': Language(40, 'PyPy 2.7', 'py'),
+    '11': Language(41, 'PyPy 3.7', 'py')
 }
 
 
@@ -94,6 +98,18 @@ def get_language():
     return Language(*language)
 
 
+def get_run_command():
+    try:
+        config_dict = json.load(open(CONFIG_FILE))
+        run_command = config_dict['run']
+    except FileNotFoundError:
+        print(error_style('Configuration file has not been found.'))
+        sys.exit()
+    except KeyError:
+        return ''
+    return run_command
+
+
 def get_compile_command():
     try:
         config_dict = json.load(open(CONFIG_FILE))
@@ -102,6 +118,5 @@ def get_compile_command():
         print(error_style('Configuration file has not been found.'))
         sys.exit()
     except KeyError:
-        print(error_style('Specify compile command first.'))
-        sys.exit()
+        return ''
     return compile_command
