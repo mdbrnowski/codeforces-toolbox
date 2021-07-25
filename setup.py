@@ -15,7 +15,7 @@ setup(
     long_description_content_type='text/markdown',
     author='Michał Dobranowski',
     author_email='mdbrnowski@gmail.com',
-    url='https://github.com/mdbrnowski/codeforces-tool',
+    url='https://github.com/mdbrnowski/codeforces-toolbox',
     packages=['cft', 'cft.utils'],
     classifiers=['Development Status :: 5 - Production/Stable',
                  'Environment :: Console',
