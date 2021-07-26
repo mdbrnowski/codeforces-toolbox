@@ -15,17 +15,24 @@ class Language:
 CONFIG_FILE = os.path.join(os.path.expanduser("~"), '.codeforces-toolbox', 'cft_config.json')
 
 LANGUAGES = {
-    '1': Language(42, 'GNU G++11', 'cpp'),
-    '2': Language(50, 'GNU G++14', 'cpp'),
-    '3': Language(54, 'GNU G++17', 'cpp'),
-    '4': Language(61, 'GNU G++17 (64 bit)', 'cpp'),
+    '1': Language(42, 'GNU C++11', 'cpp'),
+    '2': Language(50, 'GNU C++14', 'cpp'),
+    '3': Language(54, 'GNU C++17', 'cpp'),
+    '4': Language(61, 'GNU C++17 (64 bit)', 'cpp'),
     '5': Language(2,  'Microsoft Visual C++ 2010', 'cpp'),
     '6': Language(59, 'Microsoft Visual C++ 2017', 'cpp'),
-    '7': Language(43, 'GNU GCC C11', 'c'),
+    '7': Language(43, 'GNU C11', 'c'),
     '8': Language(7,  'Python 2.7', 'py'),
     '9': Language(31, 'Python 3.8', 'py'),
     '10': Language(40, 'PyPy 2.7', 'py'),
-    '11': Language(41, 'PyPy 3.7', 'py')
+    '11': Language(41, 'PyPy 3.7', 'py'),
+    '12': Language(36, 'Java 8', 'java'),
+    '13': Language(60, 'Java 11', 'java'),
+    '14': Language(48, 'Kotlin', 'kt'),
+    '15': Language(49, 'Rust', 'rs'),
+    '16': Language(9, 'C# Mono', 'cs'),
+    '17': Language(65, 'C# .NET', 'cs'),
+    '18': Language(32, 'Go', 'go')
 }
 
 

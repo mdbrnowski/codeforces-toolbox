@@ -1,5 +1,4 @@
 import subprocess
-import sys
 
 import bs4
 import requests
@@ -56,7 +55,10 @@ def test(args):
 def compile_solution(problem, compile_command):
     language = get_language()
     try:
-        return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
+        if language.ext in ('c', 'cpp', 'kt'):
+            return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
+        else:
+            return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}'], timeout=10)
     except subprocess.TimeoutExpired:
         print(error_style('Compilation time has exceeded 10 seconds.'))
         print('Make sure you are using appropriate compile and run commands for your language.')
@@ -76,17 +78,19 @@ def test_solution(problem, i):
     run_command = get_run_command()
     try:
         if run_command:
-            r = subprocess.run([*run_command.split(' '), f'{problem}.{language.ext}'], input=test_in,
-                               capture_output=True, timeout=10, encoding='utf-8')
+            if language.ext == 'java':
+                r = subprocess.run([*run_command.split(' '), problem], input=test_in, capture_output=True,
+                                   timeout=10, encoding='utf-8')
+            else:
+                r = subprocess.run([*run_command.split(' '), f'{problem}.{language.ext}'], input=test_in,
+                                   capture_output=True, timeout=10, encoding='utf-8')
         else:
             r = subprocess.run('./' + problem, input=test_in, capture_output=True, timeout=10, encoding='utf-8')
         test_out = r.stdout.strip()
         test_err = r.stderr.strip()
     except FileNotFoundError:
         print(error_style('Executable file has not been found.'))
-        print('If your are using a compiled language (' + neutral_style('C++') + ', ' + neutral_style('C') +
-              '), set compile command.')
-        print('If you are using a interpreted language (' + neutral_style('Python') + '), set run command.')
+        print('Make sure you are using appropriate compile and run commands for your language.')
         sys.exit()
     except subprocess.TimeoutExpired:
         print(negative_style('Execution time exceeded 10 seconds.'))
