@@ -7,17 +7,18 @@
 
 This tool is a CLI (Command Line Interface) that makes writing [Codeforces](https://codeforces.com/) contests more efficient.
 
-***Note:*** At the moment only C++ and C are supported.
-
 ## Features
 
 * Create files based on the specified template. These files will be named appropriately for the contest, for example 1000A, 1000B1, 1000B2, 1000C.
 * Download sample test from Codeforces.
 * Compile solution and test it.
-* Submit solution and get the verdict.
+* Submit solution
+* Wait for the verdict
+
+Supported languages: C++, C, Python, Java, Kotlin, Rust, C#, Go.
 
 
-### Template, username, password, language, compilation command
+### Settings configuration
 
 `cft config`
 
@@ -28,8 +29,11 @@ Choose one of the following (type an integer):
   3. change password
   4. change language
   5. set compile command
+  6. set run command
 ```
-then you can just type an integer (1-5) and change your template file, username, password, language or compilation command.
+then you can just type an integer (1-6) and change your template file, username, password, language, run or compilation command.
+
+See the FAQ at the bottom of this page.
 
 ### Creating structure for a contest
 
@@ -76,3 +80,17 @@ pip install codeforces-toolbox
 ## Contribution & bugs
 
 If you want to contribute to the project, fork this repository and open a new PR. If you have any questions or suggestions, email me (you can find my email address at my profile page) or create an issue.
+
+## FAQ
+
+> My favorite language is not supported!
+
+Well, that is not a question, nevertheless I encourage you to create an issue in the repository.
+
+> _Compile command_, _run command_ – what is this?
+
+_Compile command_ is the command you would use to compile your solution. For example: in C++ it can be `g++ -Wall`, in Java `javac`, in Kotlin `kotlinc-native`, in Rust `rustc`, in C# `csc`, in Go `go build`. Note that Python does not have a corresponding compiler because it is an interpreted language.
+
+_Run command_ is the command you would use to run your solution. If you are using a language that compiles to machine code that your operating system can run, you don't need this command. Otherwise, if you are using Python this can be `python`, `python3`, `py`, `pypy`. In the case of Java, it is probably `java`.
+
+I assume that your compiler/interpreter is added to the PATH environment variable. If it is not, add it, or provide an absolute path, e.g. `C:\Users\user\AppData\Local\Programs\Python\Python39\python.exe` instead of just `python`.
