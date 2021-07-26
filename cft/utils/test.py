@@ -26,7 +26,7 @@ def test(args):
         try:
             r.raise_for_status()
         except requests.HTTPError:
-            print(error_style("Something went wrong while downloading tests"))
+            print(error_style('Something went wrong while downloading tests'))
             sys.exit()
 
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
@@ -38,39 +38,62 @@ def test(args):
             with open(os.path.join('ans', f'{i}.out'), 'w') as answer_file:
                 answer_file.write(test_ans.string.strip())
 
-    if compile_solution(problem).returncode != 0:
-        print(error_style('Solution has not been compiled.'))
-        sys.exit()
-    else:
-        print('Solution has been compiled.')
+    compile_command = get_compile_command()
+    if compile_command:
+        if compile_solution(problem, compile_command).returncode != 0:
+            print(error_style('Solution has not been compiled.'))
+            sys.exit()
+        else:
+            print('Solution has been compiled.')
 
     i = 1
     while os.path.exists(os.path.join('in', f'{i}.in')):
-        test_solution_file(problem, i)
+        test_solution(problem, i)
         i += 1
 
 
-def compile_solution(problem):
-    compile_command = get_compile_command().split(' ')
+def compile_solution(problem, compile_command):
+    language = get_language()
     try:
-        return subprocess.run([*compile_command, f'{problem}.cpp', '-o', problem])
+        if language.ext in ('c', 'cpp', 'kt'):
+            return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
+        else:
+            return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}'], timeout=10)
+    except subprocess.TimeoutExpired:
+        print(error_style('Compilation time has exceeded 10 seconds.'))
+        print('Make sure you are using appropriate compile and run commands for your language.')
+        sys.exit()
     except OSError:
         print(error_style('Compile command is wrong or compiler is not installed.'))
         sys.exit()
 
 
-def test_solution_file(solution, i):
+def test_solution(problem, i):
     with open(os.path.join('in', f'{i}.in')) as input_file:
         test_in = input_file.read()
     with open(os.path.join('ans', f'{i}.out')) as answer_file:
         test_ans = answer_file.read()
 
+    language = get_language()
+    run_command = get_run_command()
     try:
-        r = subprocess.run('./' + solution, input=test_in, capture_output=True, timeout=5, encoding='utf-8')
+        if run_command:
+            if language.ext == 'java':
+                r = subprocess.run([*run_command.split(' '), problem], input=test_in, capture_output=True,
+                                   timeout=10, encoding='utf-8')
+            else:
+                r = subprocess.run([*run_command.split(' '), f'{problem}.{language.ext}'], input=test_in,
+                                   capture_output=True, timeout=10, encoding='utf-8')
+        else:
+            r = subprocess.run('./' + problem, input=test_in, capture_output=True, timeout=10, encoding='utf-8')
         test_out = r.stdout.strip()
         test_err = r.stderr.strip()
+    except FileNotFoundError:
+        print(error_style('Executable file has not been found.'))
+        print('Make sure you are using appropriate compile and run commands for your language.')
+        sys.exit()
     except subprocess.TimeoutExpired:
-        print(negative_style('Execution time exceeded 5 seconds'))
+        print(negative_style('Execution time exceeded 10 seconds.'))
         return
 
     if test_out.split() == test_ans.split():    # delete every whitespace

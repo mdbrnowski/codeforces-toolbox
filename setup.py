@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='codeforces-toolbox',
-    version='1.1.0',
+    version='1.2.0',
     description='Codeforces CLI that makes writing contests more efficient.',
     long_description=long_description,
     long_description_content_type='text/markdown',
