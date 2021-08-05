@@ -45,15 +45,18 @@ def submit(args):
             sys.exit()
         print('Solution has been submitted.')
 
-        print('Verdict:', end=' ')
+        print('Verdict:')
         while True:
             site = s.get(f'https://codeforces.com/submissions/{username}')
             soup = bs4.BeautifulSoup(site.content, 'html.parser')
             v = soup.select_one('div.datatable table tr:nth-child(2) td.status-verdict-cell').text.strip()
-            if not (v.startswith('Running') or v == 'In queue'):
-                if v == 'Accepted':
-                    print(positive_style(v))
-                else:
-                    print(negative_style(v))
+            print('\033[F\033[K', end='')
+            if v.startswith('Running') or v == 'In queue':
+                print('Verdict: ' + v)
+            elif v == 'Accepted':
+                print('Verdict: ' + positive_style(v))
                 break
-            time.sleep(2)
+            else:
+                print('Verdict: ' + negative_style(v))
+                break
+            time.sleep(.05)

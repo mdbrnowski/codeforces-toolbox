@@ -2,14 +2,14 @@
 
 from setuptools import setup
 
-with open('README.md') as f:
+with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 with open('requirements.txt') as f:
     requirements = f.read().split('\n')
 
 setup(
     name='codeforces-toolbox',
-    version='1.2.0',
+    version='1.3.0',
     description='Codeforces CLI that makes writing contests more efficient.',
     long_description=long_description,
     long_description_content_type='text/markdown',
