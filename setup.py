@@ -3,7 +3,7 @@
 from setuptools import setup
 from cft import __version__
 
-with open('README.md') as f:
+with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 with open('requirements.txt') as f:
     requirements = f.read().split('\n')
