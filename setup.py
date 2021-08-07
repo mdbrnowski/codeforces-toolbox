@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from setuptools import setup
+from cft import __version__
 
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
@@ -9,7 +10,7 @@ with open('requirements.txt') as f:
 
 setup(
     name='codeforces-toolbox',
-    version='1.3.0',
+    version=__version__,
     description='Codeforces CLI that makes writing contests more efficient.',
     long_description=long_description,
     long_description_content_type='text/markdown',

@@ -2,17 +2,20 @@
 
 import argparse
 
+from cft import __version__
 from cft.utils.config import config
+from cft.utils.constants import *
 from cft.utils.race import race
 from cft.utils.submit import submit
 from cft.utils.test import test
-from cft.utils.constants import *
 
 
 def main():
     os.system('')    # enable colors in Windows cmd
-    parser = argparse.ArgumentParser(prog='cft', description=neutral_style('----- Codeforces toolbox -----'),
+    parser = argparse.ArgumentParser(prog='cft', description=neutral_style('----- Codeforces Toolbox -----'),
                                      epilog='Wish you high ratings!')
+    parser.add_argument('-v', '--version', action='version', version=neutral_style(f'Codeforces Toolbox {__version__}'),
+                        help='show version number')
     subparsers = parser.add_subparsers()
 
     config_parser = subparsers.add_parser('config', help='change configuration of the cft')
