@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 
 import bs4
@@ -99,8 +100,17 @@ def test_solution(problem, i):
     if test_out.split() == test_ans.split():    # delete every whitespace
         print(positive_style('Test passed'))
     else:
-        print(negative_style('Test did not pass'))
-        print('Program output:', test_out, sep='\n')
+        print(negative_style('Test did not pass\n'))
         if test_err:
-            print('\nProgram error:', test_err, sep='\n')
-        print('\nAnswer:', test_ans, sep='\n')
+            print('Program error:', test_err, '', sep='\n')
+        terminal_width = (shutil.get_terminal_size().columns - 2) // 2
+        max_line_width = max(len(line) for line in test_out.split('\n') + test_ans.split('\n'))
+        if max_line_width > terminal_width:
+            print('Program output:', test_out, '', sep='\n')
+            print('Answer:', test_ans, sep='\n')
+        else:
+            max_line_width = min(max_line_width + 4, terminal_width)
+            print(f'{"Program output:":{max_line_width}}{"Answer:":{max_line_width}}')
+            for out_line, ans_line in zip(test_out.split('\n'), test_ans.split('\n')):
+                print(f'{out_line:{max_line_width}}{ans_line:{max_line_width}}')
+        print('')
