@@ -28,6 +28,7 @@ def main():
     test_parser = subparsers.add_parser('test', help='test solution file')
     test_parser.add_argument('problem', type=str, help='problem id in the form "A" or "1234A"')
     test_parser.add_argument('-d', '--download', action='store_true', help='force download test from CF')
+    test_parser.add_argument('-p', '--precision', help='set precision for floating numbers, e.g. 1e-9')
     test_parser.set_defaults(func=test)
 
     submit_parser = subparsers.add_parser('submit', help='submit solution')
