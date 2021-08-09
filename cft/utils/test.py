@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 
 import bs4
@@ -48,7 +49,7 @@ def test(args):
 
     i = 1
     while os.path.exists(os.path.join('in', f'{i}.in')):
-        test_solution(problem, i)
+        test_solution(problem, i, args)
         i += 1
 
 
@@ -68,7 +69,7 @@ def compile_solution(problem, compile_command):
         sys.exit()
 
 
-def test_solution(problem, i):
+def test_solution(problem, i, args):
     with open(os.path.join('in', f'{i}.in')) as input_file:
         test_in = input_file.read()
     with open(os.path.join('ans', f'{i}.out')) as answer_file:
@@ -96,11 +97,43 @@ def test_solution(problem, i):
         print(negative_style('Execution time exceeded 10 seconds.'))
         return
 
-    if test_out.split() == test_ans.split():    # delete every whitespace
+    if all(check_line(o, ans, args) for o, ans in zip(test_out.split('\n'), test_ans.split('\n'))):
         print(positive_style('Test passed'))
     else:
-        print(negative_style('Test did not pass'))
-        print('Program output:', test_out, sep='\n')
+        print(negative_style('Test did not pass\n'))
         if test_err:
-            print('\nProgram error:', test_err, sep='\n')
-        print('\nAnswer:', test_ans, sep='\n')
+            print('Program error:', test_err, '', sep='\n')
+        terminal_width = (shutil.get_terminal_size().columns - 4) // 2
+        max_line_width = max(len(line) for line in test_out.split('\n') + test_ans.split('\n'))
+        if max_line_width > terminal_width:
+            print('Program output:', test_out, '', sep='\n')
+            print('Answer:', test_ans, sep='\n')
+        else:
+            max_line_width = min(max_line_width + 4, terminal_width)
+            print(f'{"Program output:":{max_line_width}}    {"Answer:":{max_line_width}}')
+            for out_line, ans_line in zip(test_out.split('\n'), test_ans.split('\n')):
+                separator = negative_style(' ?  ') if not check_line(out_line, ans_line, args) else ' '*4
+                print(f'{out_line:{max_line_width}}{separator}{ans_line:{max_line_width}}')
+        print('')
+
+
+def check_line(out_line, ans_line, args):
+    if not args.precision:
+        return out_line.split() == ans_line.split()
+    else:
+        for a, b in zip(out_line.split(), ans_line.split()):
+            try:
+                a, b = float(a), float(b)
+            except ValueError:
+                print(error_style('Some part of answer or output is not a floating point number.'))
+                sys.exit()
+            try:
+                precision = float(args.precision)
+            except ValueError:
+                print(error_style('Precision should be a floating point number.'))
+                sys.exit()
+
+            cf_precision_check = abs(a - b) / max(1.0, abs(b)) <= precision    # relative or absolute error
+            if not cf_precision_check:
+                return False
+    return True
