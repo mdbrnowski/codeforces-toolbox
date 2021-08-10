@@ -109,7 +109,7 @@ def test_solution(problem, i, args):
             print('Program output:', test_out, '', sep='\n')
             print('Answer:', test_ans, sep='\n')
         else:
-            max_line_width = min(max_line_width + 4, terminal_width)
+            max_line_width = min(max(max_line_width + 4, 16), terminal_width)
             print(f'{"Program output:":{max_line_width}}    {"Answer:":{max_line_width}}')
             for out_line, ans_line in zip(test_out.split('\n'), test_ans.split('\n')):
                 separator = negative_style(' ?  ') if not check_line(out_line, ans_line, args) else ' '*4
