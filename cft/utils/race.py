@@ -30,7 +30,7 @@ def contest_letters(contest):
         if len(r.history):
             raise requests.HTTPError
     except requests.HTTPError:
-        print(warning_style('Something went wrong while accessing problems'))
+        print(warning_style('Something went wrong while accessing problems.'))
         return contest_letters_default(contest)
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
     letters = soup.select('table.problems tr:nth-child(n+2) td:first-child a')
@@ -42,7 +42,7 @@ def contest_letters_default(contest):
     if d.lower() in ('y', 'yes'):
         return list('ABCDEFG')
     else:
-        print('Aborted')
+        print(info_style('Aborted.'))
         os.chdir('..')
         os.rmdir(contest)
         sys.exit()

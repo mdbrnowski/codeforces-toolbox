@@ -36,27 +36,27 @@ LANGUAGES = {
 }
 
 
-def error_style(message):
+def error_style(message) -> str:
     return fg(196) + message + rs.all   # red
 
 
-def warning_style(message):
+def warning_style(message) -> str:
     return fg(220) + message + rs.all   # yellow
 
 
-def info_style(message):
+def info_style(message) -> str:
     return fg(244) + message + rs.all   # grey
 
 
-def positive_style(message):
+def positive_style(message) -> str:
     return fg(70) + message + rs.all    # green
 
 
-def negative_style(message):
+def negative_style(message) -> str:
     return fg(208) + message + rs.all   # orange
 
 
-def neutral_style(message):
+def neutral_style(message) -> str:
     return fg(69) + message + rs.all    # blue
 
 

@@ -43,7 +43,7 @@ def submit(args):
         except requests.HTTPError:
             print(error_style("Something went wrong while submitting."))
             sys.exit()
-        print('Solution has been submitted.')
+        print(info_style('Solution has been submitted.'))
 
         print('Verdict:')
         while True:
@@ -52,7 +52,7 @@ def submit(args):
             v = soup.select_one('div.datatable table tr:nth-child(2) td.status-verdict-cell').text.strip()
             print('\033[F\033[K', end='')
             if v.startswith('Running') or v == 'In queue':
-                print('Verdict: ' + v)
+                print('Verdict: ' + info_style(v))
             elif v == 'Accepted':
                 print('Verdict: ' + positive_style(v))
                 break

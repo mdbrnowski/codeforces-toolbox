@@ -27,7 +27,7 @@ def test(args):
         try:
             r.raise_for_status()
         except requests.HTTPError:
-            print(error_style('Something went wrong while downloading tests'))
+            print(error_style('Something went wrong while downloading tests.'))
             sys.exit()
 
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
@@ -45,7 +45,7 @@ def test(args):
             print(error_style('Solution has not been compiled.'))
             sys.exit()
         else:
-            print('Solution has been compiled.')
+            print(info_style('Solution has been compiled.'))
 
     i = 1
     while os.path.exists(os.path.join('in', f'{i}.in')):
@@ -62,7 +62,7 @@ def compile_solution(problem, compile_command):
             return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}'], timeout=10)
     except subprocess.TimeoutExpired:
         print(error_style('Compilation time has exceeded 10 seconds.'))
-        print('Make sure you are using appropriate compile and run commands for your language.')
+        print(info_style('Make sure you are using appropriate compile and run commands for your language.'))
         sys.exit()
     except OSError:
         print(error_style('Compile command is wrong or compiler is not installed.'))
@@ -91,7 +91,7 @@ def test_solution(problem, i, args):
         test_err = r.stderr.strip()
     except FileNotFoundError:
         print(error_style('Executable file has not been found.'))
-        print('Make sure you are using appropriate compile and run commands for your language.')
+        print(info_style('Make sure you are using appropriate compile and run commands for your language.'))
         sys.exit()
     except subprocess.TimeoutExpired:
         print(negative_style('Execution time exceeded 10 seconds.'))
@@ -102,18 +102,18 @@ def test_solution(problem, i, args):
     else:
         print(negative_style('Test did not pass\n'))
         if test_err:
-            print('Program error:', test_err, '', sep='\n')
+            print(info_style('Program error:'), test_err, '', sep='\n')
         terminal_width = (shutil.get_terminal_size().columns - 4) // 2
         max_line_width = max(len(line) for line in test_out.split('\n') + test_ans.split('\n'))
         if max_line_width > terminal_width:
-            print('Program output:', test_out, '', sep='\n')
-            print('Answer:', test_ans, sep='\n')
+            print(info_style('Program output:'), test_out, '', sep='\n')
+            print(info_style('Answer:'), test_ans, sep='\n')
         else:
             max_line_width = min(max(max_line_width + 4, 16), terminal_width)
-            print(f'{"Program output:":{max_line_width}}    {"Answer:":{max_line_width}}')
+            print(info_style(f'{"Program output:":{max_line_width}}    Answer:'))
             for out_line, ans_line in zip(test_out.split('\n'), test_ans.split('\n')):
-                separator = negative_style(' ?  ') if not check_line(out_line, ans_line, args) else ' '*4
-                print(f'{out_line:{max_line_width}}{separator}{ans_line:{max_line_width}}')
+                separator = negative_style(' ?  ') if not check_line(out_line, ans_line, args) else ' ' * 4
+                print(f'{out_line:{max_line_width}}{separator}{ans_line}')
         print('')
 
 
