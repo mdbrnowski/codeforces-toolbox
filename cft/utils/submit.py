@@ -14,7 +14,7 @@ def submit(args):
         site = s.get('https://codeforces.com/enter')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
-        username = get_username()
+        username = get_config('username')
         password = keyring.get_password('codeforces-toolbox', username)
         login_data = {'csrf_token': csrf_token, 'action': 'enter', 'handleOrEmail': username, 'password': password}
         login_response = s.post('https://codeforces.com/enter', data=login_data)
@@ -32,7 +32,7 @@ def submit(args):
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
-        language = get_language()
+        language = get_config('language')
         with open(os.path.join(os.getcwd(), f'{contest}{problem_letter}.{language.ext}')) as f:
             solution = f.read()
         submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': problem_letter, 'programTypeId': language.n,

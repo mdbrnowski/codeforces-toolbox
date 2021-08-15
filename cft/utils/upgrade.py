@@ -20,7 +20,7 @@ def try_upgrade():
         if d.lower() in ('y', 'yes'):
             s = subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'codeforces-toolbox'],
                                stdout=subprocess.DEVNULL)
-            if s.returncode:
+            if s.returncode != 0:
                 print(error_style('Installation failed.\n'))
             else:
                 print(info_style('Installation was successful.\n'))

@@ -70,64 +70,38 @@ def translate_problem_name(problem):
     return contest, problem_letter
 
 
-def get_template():
+def get_config(setting, strict=True):
+    if setting == 'language':
+        return _get_config_language(strict=strict)
+
     try:
         config_dict = json.load(open(CONFIG_FILE))
-        template = config_dict['template']
+        setting = config_dict[setting]
     except FileNotFoundError:
+        if not strict:
+            return ''
         print(error_style('Configuration file has not been found.'))
         sys.exit()
     except KeyError:
-        print(error_style('Specify your template file first.'))
+        if setting in ('compile', 'run') or not strict:
+            return ''
+        print(error_style(f'Specify your {setting} first.'))
         sys.exit()
-    return template
+    return setting
 
 
-def get_username():
-    try:
-        config_dict = json.load(open(CONFIG_FILE))
-        username = config_dict['username']
-    except FileNotFoundError:
-        print(error_style('Configuration file has not been found.'))
-        sys.exit()
-    except KeyError:
-        print(error_style('Specify your username first.'))
-        sys.exit()
-    return username
-
-
-def get_language():
+def _get_config_language(strict=True):
     try:
         config_dict = json.load(open(CONFIG_FILE))
         language = config_dict['language']
     except FileNotFoundError:
-        print(error_style('Configuration file has not been found.'))
+        if not strict:
+            return Language(0, '', '')
+        print(error_style('Configuration file has not been found. Use `cft config`.'))
         sys.exit()
     except KeyError:
+        if not strict:
+            return Language(0, '', '')
         print(error_style('Specify your programming language first.'))
         sys.exit()
     return Language(*language)
-
-
-def get_run_command():
-    try:
-        config_dict = json.load(open(CONFIG_FILE))
-        run_command = config_dict['run']
-    except FileNotFoundError:
-        print(error_style('Configuration file has not been found.'))
-        sys.exit()
-    except KeyError:
-        return ''
-    return run_command
-
-
-def get_compile_command():
-    try:
-        config_dict = json.load(open(CONFIG_FILE))
-        compile_command = config_dict['compile']
-    except FileNotFoundError:
-        print(error_style('Configuration file has not been found.'))
-        sys.exit()
-    except KeyError:
-        return ''
-    return compile_command

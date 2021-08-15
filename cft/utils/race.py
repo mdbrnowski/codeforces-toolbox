@@ -7,9 +7,9 @@ from .constants import *
 
 
 def race(args):
-    language = get_language()
+    language = get_config('language')
     contest = args.contest
-    template = get_template()
+    template = get_config('template')
     if not os.path.exists(template):
         print(error_style('Template file does not exist.'))
         sys.exit()
