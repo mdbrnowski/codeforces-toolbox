@@ -44,6 +44,10 @@ def warning_style(message):
     return fg(220) + message + rs.all   # yellow
 
 
+def info_style(message):
+    return fg(244) + message + rs.all   # grey
+
+
 def positive_style(message):
     return fg(70) + message + rs.all    # green
 

@@ -8,14 +8,14 @@ from cft.utils.constants import *
 from cft.utils.race import race
 from cft.utils.submit import submit
 from cft.utils.test import test
+from cft.utils.upgrade import try_upgrade
 
 
 def main():
     os.system('')    # enable colors in Windows cmd
     parser = argparse.ArgumentParser(prog='cft', description=neutral_style('----- Codeforces Toolbox -----'),
                                      epilog='Wish you high ratings!')
-    parser.add_argument('-v', '--version', action='version', version=neutral_style(f'Codeforces Toolbox {__version__}'),
-                        help='show version number')
+    parser.add_argument('-v', '--version', action='version', version=neutral_style(f'Codeforces Toolbox {__version__}'))
     subparsers = parser.add_subparsers()
 
     config_parser = subparsers.add_parser('config', help='change configuration of the cft')
@@ -35,5 +35,9 @@ def main():
     submit_parser.add_argument('problem', type=str, help='problem id in the form "A" or "1234A"')
     submit_parser.set_defaults(func=submit)
 
-    args = parser.parse_args(None if sys.argv[1:] else ['-h'])
-    args.func(args)
+    if sys.argv[1:]:
+        args = parser.parse_args()
+        args.func(args)
+    else:
+        parser.print_help()
+        try_upgrade()

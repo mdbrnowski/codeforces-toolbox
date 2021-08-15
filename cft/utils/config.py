@@ -3,9 +3,11 @@ import getpass
 import keyring
 
 from .constants import *
+from .upgrade import try_upgrade
 
 
 def config(args):
+    try_upgrade()
     print('Choose one of the following (type an integer):',
           '  1. change the template file',
           '  2. change username and password',
@@ -19,7 +21,7 @@ def config(args):
             print(warning_style('Type an integer 1-6:'))
         choice = int(choice)
     except KeyboardInterrupt:
-        print(warning_style('Aborted.'))
+        print(info_style('Aborted.'))
         sys.exit(0)
 
     if not os.path.exists(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox')):
@@ -68,7 +70,7 @@ def config(args):
             config_dict['run'] = input('Run command: ')
 
     except KeyboardInterrupt:
-        print(warning_style('\nAborted.'))
+        print(info_style('\nAborted.'))
 
     finally:
         json.dump(config_dict, open(CONFIG_FILE, 'w'))

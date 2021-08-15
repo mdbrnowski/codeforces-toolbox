@@ -89,10 +89,11 @@ Then just copy and paste in your terminal this:
 pip install codeforces-toolbox
 ```
 
-If you want to update the package, you can do this by:
+If you want to upgrade the package, you can do this by:
 ```commandline
 pip install --upgrade codeforces-toolbox
 ```
+The program will automatically check if there is a new version and try to install it if you run `cft` without any arguments or `cft config`.
 
 If `pip` command is not found you can use `pip3 install codeforces-toolbox` or `python3 -m pip install codeforces-toolbox`. 
 
