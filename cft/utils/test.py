@@ -39,7 +39,7 @@ def test(args):
             with open(os.path.join('ans', f'{i}.out'), 'w') as answer_file:
                 answer_file.write(test_ans.string.strip())
 
-    compile_command = get_compile_command()
+    compile_command = get_config('compile')
     if compile_command:
         if compile_solution(problem, compile_command).returncode != 0:
             print(error_style('Solution has not been compiled.'))
@@ -54,7 +54,7 @@ def test(args):
 
 
 def compile_solution(problem, compile_command):
-    language = get_language()
+    language = get_config('language')
     try:
         if language.ext in ('c', 'cpp', 'kt'):
             return subprocess.run([*compile_command.split(' '), f'{problem}.{language.ext}', '-o', problem], timeout=10)
@@ -75,8 +75,8 @@ def test_solution(problem, i, args):
     with open(os.path.join('ans', f'{i}.out')) as answer_file:
         test_ans = answer_file.read()
 
-    language = get_language()
-    run_command = get_run_command()
+    language = get_config('language')
+    run_command = get_config('run')
     try:
         if run_command:
             if language.ext == 'java':
