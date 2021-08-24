@@ -26,12 +26,11 @@ Supported languages: C++, C, Python, Java, Kotlin, Rust, C#, Go.
 Choose one of the following (type an integer):
   1. change the template file
   2. change username and password
-  3. change password
-  4. change language
-  5. set compile command
-  6. set run command
+  3. change programming language
+  4. set compile command
+  5. set run command
 ```
-then you can just type an integer (1-6) and change your template file, username, password, language, run or compilation command.
+then you can just type an integer (1-5) and change your template file, username and password, language, run or compilation command.
 
 See the FAQ at the bottom of this page.
 
@@ -60,19 +59,11 @@ It is recommended that you then change the current working directory (`cd 1234`)
 
 If your current working directory is `some/path/1234` you can type just `cft test A`.
 
-Test will be downloaded only if directories `/in` and `/ans` are empty or do not exist. You can force download test from Codeforces by using `-d` or `--download` flag.
-```commandline
-cft test 1234A -d
-cft test 1234A --download
-```
-
 If your answer uses floating point numbers you can determine what error will be acceptable by using `-p` or `--precision` flag.
 ```commandline
 cft test 1495A -p 1e-9
 cft test 1495A --precision 1e-9
 ```
-
-Of course, you can combine both flags, e.g. `cft test A -d -p 1e-9`.
 
 ### Submitting solution
 
