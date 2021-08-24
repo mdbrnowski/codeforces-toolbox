@@ -22,13 +22,10 @@ def config(args):
             current = '  ' + info_style('[') + neutral_style(current) + info_style(']')
         print(f'  {option}{current}')
 
-    try:
-        while (choice := input()) not in {'1', '2', '3', '4', '5'}:
-            print(warning_style('Type an integer 1-5:'))
-        choice = int(choice)
-    except KeyboardInterrupt:
-        print(info_style('Aborted.'))
-        sys.exit(0)
+    print('Option: ', end='')
+    while (choice := input()) not in list('12345'):
+        print(warning_style('Type an integer 1-5: '), end='')
+    choice = int(choice)
 
     if not os.path.exists(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox')):
         os.makedirs(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'))
@@ -53,7 +50,7 @@ def config(args):
             for key, lan in LANGUAGES.items():
                 print(f'    {key + "." :3} {lan.name:30}' + neutral_style(lan.ext))
             while (language := input()) not in LANGUAGES.keys():
-                print(warning_style('Type an integer 1-5:'))
+                print(warning_style('Type an integer 1-18: '), end='')
             config_dict['language'] = (LANGUAGES[language].n, LANGUAGES[language].name, LANGUAGES[language].ext)
 
         if choice == 4:
@@ -67,9 +64,6 @@ def config(args):
             print('If you are using any language other than ' + neutral_style('Python') + ' or ' + neutral_style('Java')
                   + ', you can just press enter, your run command will be just `./`.')
             config_dict['run'] = input('Run command: ')
-
-    except KeyboardInterrupt:
-        print(info_style('\nAborted.'))
 
     finally:
         json.dump(config_dict, open(CONFIG_FILE, 'w'))

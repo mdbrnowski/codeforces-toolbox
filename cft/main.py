@@ -37,7 +37,10 @@ def main():
 
     if sys.argv[1:]:
         args = parser.parse_args()
-        args.func(args)
+        try:
+            args.func(args)
+        except KeyboardInterrupt:
+            print(info_style('\nAborted.'))
     else:
         parser.print_help()
         try_upgrade()

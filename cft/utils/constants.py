@@ -71,6 +71,11 @@ def translate_problem_name(problem):
 
 
 def get_config(setting, strict=True):
+    """
+    :param setting: 'template', 'username', 'language', 'run', 'compile' or 'last_downloaded'
+    :param strict: if the function should raise exception if not found
+    :return: string or Language object
+    """
     if setting == 'language':
         return _get_config_language(strict=strict)
 
@@ -80,7 +85,7 @@ def get_config(setting, strict=True):
     except FileNotFoundError:
         if not strict:
             return ''
-        print(error_style('Configuration file has not been found.'))
+        print(error_style('Configuration file has not been found. . Use `cft config`.'))
         sys.exit()
     except KeyError:
         if setting in ('compile', 'run') or not strict:
@@ -105,3 +110,12 @@ def _get_config_language(strict=True):
         print(error_style('Specify your programming language first.'))
         sys.exit()
     return Language(*language)
+
+
+def set_config(setting, value):
+    config_dict = dict()
+    try:
+        config_dict = json.load(open(CONFIG_FILE))
+    finally:
+        config_dict[setting] = value
+        json.dump(config_dict, open(CONFIG_FILE, 'w'))

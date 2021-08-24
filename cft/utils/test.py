@@ -16,7 +16,8 @@ def test(args):
     if not os.path.exists('ans'):
         os.makedirs('ans')
 
-    if args.download:
+    if args.download or get_config('last_downloaded', strict=False) != problem:
+        set_config('last_downloaded', problem)
         for file in os.listdir('in'):
             os.remove(os.path.join('in', file))
         for file in os.listdir('ans'):
