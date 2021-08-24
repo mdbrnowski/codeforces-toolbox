@@ -113,9 +113,14 @@ def _get_config_language(strict=True):
 
 
 def set_config(setting, value):
-    config_dict = dict()
+    if not os.path.exists(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox')):
+        os.makedirs(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'))
+
     try:
         config_dict = json.load(open(CONFIG_FILE))
-    finally:
-        config_dict[setting] = value
-        json.dump(config_dict, open(CONFIG_FILE, 'w'))
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        config_dict = dict()
+
+    config_dict[setting] = value
+    json.dump(config_dict, open(CONFIG_FILE, 'w'))
+    return value
