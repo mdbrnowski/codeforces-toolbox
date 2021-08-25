@@ -43,14 +43,20 @@ def submit(args):
         while True:
             site = s.get(f'https://codeforces.com/submissions/{username}')
             soup = bs4.BeautifulSoup(site.content, 'html.parser')
-            v = soup.select_one('div.datatable table tr:nth-child(2) td.status-verdict-cell').text.strip()
+            last_submission = soup.select_one('div.datatable table tr:nth-child(2)')
+            verdict = last_submission.select_one('td.status-verdict-cell').text.strip()
+            verdict_time = last_submission.select_one('td.time-consumed-cell').text.strip()
+            verdict_memory = last_submission.select_one('td.memory-consumed-cell').text.strip()
             print('\033[F\033[K', end='')
-            if v.startswith('Running') or v == 'In queue':
-                print('Verdict: ' + info_style(v))
-            elif v == 'Accepted':
-                print('Verdict: ' + positive_style(v))
-                break
+            if verdict.startswith('Running') or verdict == 'In queue':
+                print('Verdict: ' + info_style(verdict))
             else:
-                print('Verdict: ' + negative_style(v))
+                print('Verdict:', end=' ')
+                if verdict == 'Accepted':
+                    print(positive_style(verdict))
+                else:
+                    print(negative_style(verdict))
+                print('Time:    ' + verdict_time)
+                print('Memory:  ' + verdict_memory)
                 break
             time.sleep(.05)
