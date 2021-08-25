@@ -1,3 +1,4 @@
+import sys
 import time
 
 import bs4
@@ -19,7 +20,7 @@ def submit(args):
         login_data = {'csrf_token': csrf_token, 'action': 'enter', 'handleOrEmail': username, 'password': password}
         login_response = s.post('https://codeforces.com/enter', data=login_data)
         login_response.raise_for_status()
-        if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
+        if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('span.error.for__password') is not None:
             print(error_style('Invalid username or password.'))
             sys.exit()
 
@@ -33,8 +34,11 @@ def submit(args):
                        'source': solution}
         submit_response = s.post(f'https://codeforces.com/contest/{contest}/submit', data=submit_data)
         submit_response.raise_for_status()
-        print(info_style('Solution has been submitted.'))
+        if bs4.BeautifulSoup(submit_response.content, 'html.parser').select_one('span.error.for__source') is not None:
+            print(error_style('You have submitted exactly the same code before.'))
+            sys.exit()
 
+        print(info_style('Solution has been submitted.'))
         print('Verdict:')
         while True:
             site = s.get(f'https://codeforces.com/submissions/{username}')
