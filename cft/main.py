@@ -2,6 +2,8 @@
 
 import argparse
 
+import requests
+
 from cft import __version__
 from cft.utils.config import config
 from cft.utils.constants import *
@@ -41,6 +43,9 @@ def main():
             args.func(args)
         except KeyboardInterrupt:
             print(info_style('\nAborted.'))
+        except requests.RequestException:
+            print(error_style('Something went wrong. Check your internet connection.'))
+            sys.exit()
     else:
         parser.print_help()
         try_upgrade()

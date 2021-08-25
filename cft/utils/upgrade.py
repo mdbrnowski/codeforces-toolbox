@@ -10,7 +10,7 @@ def try_upgrade():
     try:
         r = requests.get('https://pypi.org/pypi/codeforces-toolbox/json')
         r.raise_for_status()
-    except (requests.HTTPError, requests.ConnectionError):
+    except requests.RequestException:
         return
     latest_version = r.json()['info']['version']
     if __version__ != latest_version:

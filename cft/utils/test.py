@@ -1,5 +1,6 @@
 import shutil
 import subprocess
+import sys
 
 import bs4
 import requests
@@ -25,12 +26,7 @@ def test(args):
 
     if len(os.listdir('in')) == 0:
         r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{problem_letter}')
-        try:
-            r.raise_for_status()
-        except requests.HTTPError:
-            print(error_style('Something went wrong while downloading tests.'))
-            sys.exit()
-
+        r.raise_for_status()
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
         tests_input = soup.select('div.sample-test div.input pre')
         tests_answer = soup.select('div.sample-test div.output pre')

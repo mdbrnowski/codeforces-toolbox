@@ -25,11 +25,8 @@ def race(args):
 
 def contest_letters(contest):
     r = requests.get(f'https://codeforces.com/contest/{contest}')
-    try:
-        r.raise_for_status()
-        if len(r.history):
-            raise requests.HTTPError
-    except requests.HTTPError:
+    r.raise_for_status()
+    if len(r.history):
         print(warning_style('Something went wrong while accessing problems.'))
         return contest_letters_default(contest)
     soup = bs4.BeautifulSoup(r.text, 'html.parser')
