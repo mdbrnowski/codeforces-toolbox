@@ -18,15 +18,9 @@ def submit(args):
         password = keyring.get_password('codeforces-toolbox', username)
         login_data = {'csrf_token': csrf_token, 'action': 'enter', 'handleOrEmail': username, 'password': password}
         login_response = s.post('https://codeforces.com/enter', data=login_data)
-        try:
-            login_response.raise_for_status()
-            if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
-                raise Exception('Invalid username or password.')
-        except requests.HTTPError:
-            print(error_style("Something went wrong while logging in."))
-            sys.exit()
-        except Exception as e:
-            print(error_style(e))
+        login_response.raise_for_status()
+        if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('for__password') is not None:
+            print(error_style('Invalid username or password.'))
             sys.exit()
 
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
@@ -38,11 +32,7 @@ def submit(args):
         submit_data = {'csrf_token': csrf_token, 'submittedProblemIndex': problem_letter, 'programTypeId': language.n,
                        'source': solution}
         submit_response = s.post(f'https://codeforces.com/contest/{contest}/submit', data=submit_data)
-        try:
-            submit_response.raise_for_status()
-        except requests.HTTPError:
-            print(error_style("Something went wrong while submitting."))
-            sys.exit()
+        submit_response.raise_for_status()
         print(info_style('Solution has been submitted.'))
 
         print('Verdict:')
