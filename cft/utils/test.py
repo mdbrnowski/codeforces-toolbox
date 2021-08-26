@@ -1,6 +1,6 @@
 import shutil
 import subprocess
-import sys
+from itertools import zip_longest
 
 import bs4
 import requests
@@ -94,7 +94,8 @@ def test_solution(problem, i, args):
         print(negative_style('Execution time exceeded 10 seconds.'))
         return
 
-    if all(check_line(o, ans, args) for o, ans in zip(test_out.split('\n'), test_ans.split('\n'))):
+    if all(check_line(out, ans, args) for out, ans in zip_longest(test_out.split('\n'), test_ans.split('\n'),
+                                                                  fillvalue='')):
         print(positive_style('Test passed'))
     else:
         print(negative_style('Test did not pass\n'))
@@ -108,7 +109,7 @@ def test_solution(problem, i, args):
         else:
             max_line_width = min(max(max_line_width + 4, 16), terminal_width)
             print(info_style(f'{"Program output:":{max_line_width}}    Answer:'))
-            for out_line, ans_line in zip(test_out.split('\n'), test_ans.split('\n')):
+            for out_line, ans_line in zip_longest(test_out.split('\n'), test_ans.split('\n'), fillvalue=''):
                 separator = negative_style(' ?  ') if not check_line(out_line, ans_line, args) else ' ' * 4
                 print(f'{out_line:{max_line_width}}{separator}{ans_line}')
         print('')
@@ -118,11 +119,11 @@ def check_line(out_line, ans_line, args):
     if not args.precision:
         return out_line.split() == ans_line.split()
     else:
-        for a, b in zip(out_line.split(), ans_line.split()):
+        for a, b in zip_longest(out_line.split(), ans_line.split(), fillvalue=''):
             try:
                 a, b = float(a), float(b)
             except ValueError:
-                print(error_style('Some part of answer or output is not a floating point number.'))
+                print(error_style('Some part of the output is not a floating point number. Try without -p flag.'))
                 sys.exit()
             try:
                 precision = float(args.precision)
