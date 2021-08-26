@@ -7,9 +7,14 @@ from .constants import *
 
 
 def race(args):
-    language = get_config('language')
     contest = args.contest
     template = get_config('template')
+    language = get_config('language')
+
+    if len(contest) > 4:
+        shutil.copy(template, f'{contest}.{language.ext}')
+        return
+
     if not os.path.exists(template):
         print(error_style('Template file does not exist.'))
         sys.exit()

@@ -53,6 +53,8 @@ files 1234*X*.cpp are created by copying the previously specified template file.
 
 It is recommended that you then change the current working directory (`cd 1234`) to operate more smoothly later.
 
+You can also enter a task name (e.g. `cft race 1234X`) instead of a contest name, in which case a single file will be created.
+
 ### Testing solution
 
 `cft test 1234A` compiles your solution, downloads (if not yet downloaded) example test and checks if it passes.
