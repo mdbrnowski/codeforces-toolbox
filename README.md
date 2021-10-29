@@ -1,8 +1,7 @@
 # Codeforces Toolbox
 
-[![Status PyPI](https://img.shields.io/pypi/status/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
+[![Downloads](https://pepy.tech/badge/codeforces-toolbox)](https://pepy.tech/project/codeforces-toolbox)
 [![Version PyPI](https://img.shields.io/pypi/v/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
-[![Last commit](https://img.shields.io/github/last-commit/mdbrnowski/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
 [![License PyPI](https://img.shields.io/pypi/l/codeforces-toolbox)](https://pypi.org/project/codeforces-toolbox/)
 
 This tool is a CLI (Command Line Interface) that makes writing [Codeforces](https://codeforces.com/) contests more efficient.
