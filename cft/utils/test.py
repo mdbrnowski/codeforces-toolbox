@@ -84,6 +84,8 @@ def test_solution(problem, i, args):
                                    capture_output=True, timeout=10, encoding='utf-8')
         else:
             r = subprocess.run('./' + problem, input=test_in, capture_output=True, timeout=10, encoding='utf-8')
+        if r.returncode != 0:
+            print(negative_style('Runtime error'))
         test_out = r.stdout.strip()
         test_err = r.stderr.strip()
     except FileNotFoundError:
