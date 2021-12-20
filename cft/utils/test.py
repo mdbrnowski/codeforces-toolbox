@@ -25,7 +25,7 @@ def test(args):
             os.remove(os.path.join('ans', file))
 
     if len(os.listdir('in')) == 0:
-        r = requests.get(f'https://codeforces.com/problemset/problem/{contest}/{problem_letter}')
+        r = requests.get(f'https://codeforces.com/contest/{contest}/problem/{problem_letter}')
         r.raise_for_status()
         soup = bs4.BeautifulSoup(r.text, 'html.parser')
         tests_input = soup.select('div.sample-test div.input pre')
