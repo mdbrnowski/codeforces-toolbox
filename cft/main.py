@@ -2,8 +2,8 @@
 
 import argparse
 
+import keyring
 import requests
-
 from cft import __version__
 from cft.utils.config import config
 from cft.utils.constants import *
@@ -46,6 +46,10 @@ def main():
         except requests.RequestException:
             print(error_style('Something went wrong. Check your internet connection.'))
             sys.exit()
+        except keyring.errors.NoKeyringError as e:
+            print(error_style('Keyring problem: '), e)
+        except Exception as e:
+            print(error_style('Error'), e)
     else:
         parser.print_help()
         try_upgrade()
