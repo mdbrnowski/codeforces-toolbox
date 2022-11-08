@@ -12,7 +12,7 @@ class Language:
         self.ext = extension
 
 
-CONFIG_FILE = os.path.join(os.path.expanduser("~"), '.codeforces-toolbox', 'cft_config.json')
+CONFIG_FILE = os.path.join(os.path.expanduser('~'), '.codeforces-toolbox', 'cft_config.json')
 
 LANGUAGES = {
     '1': Language(50, 'GNU C++14', 'cpp'),
@@ -65,8 +65,12 @@ def translate_problem_name(problem):
         problem_letter = problem
         contest = os.path.basename(os.getcwd())
     else:
-        problem_letter = problem[4:]
-        contest = problem[:4]
+        if problem[-1].isnumeric():
+            problem_letter = problem[-2:]
+            contest = problem[:-2]
+        else:
+            problem_letter = problem[-1]
+            contest = problem[:-1]
     return contest, problem_letter
 
 
