@@ -2,4 +2,4 @@ keyring>=23.0.1
 keyrings.alt>=4.1.0
 requests>=2.23.0
 beautifulsoup4>=4.9.1
-sty>=1.0.0rc1
+sty>=1.0.0

@@ -1,6 +1,5 @@
-import sys
-import os
-import time,datetime
+import time
+import datetime
 import pickle
 
 import bs4
@@ -9,22 +8,21 @@ import requests
 
 from .constants import *
 
-SESSION_PATH=os.path.join(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'),"sessions")
+SESSION_PATH = os.path.join(os.path.expanduser('~'), '.codeforces-toolbox', 'sessions')
 
 
 def load_session(filename):
-    dbfile = open(filename, 'rb')     
+    dbfile = open(filename, 'rb')
     db = pickle.load(dbfile)
     dbfile.close()
     return db
 
 
-
-def dump_session(session,filename):
+def dump_session(session, filename):
     if os.path.isfile(filename):
         os.remove(filename)
     dbfile = open(filename, 'ab')
-    pickle.dump(session, dbfile)                     
+    pickle.dump(session, dbfile)
     dbfile.close()
     return
 
@@ -45,21 +43,16 @@ def login():
         # removing session as it is expired
         if os.path.isfile(SESSION_PATH):
             os.remove(SESSION_PATH)
-        dump_session(s,SESSION_PATH)
+        dump_session(s, SESSION_PATH)
 
 
 def check_time():
-    if os.path.isfile(SESSION_PATH)==False:
+    if os.path.isfile(SESSION_PATH) is False:
         login()
-    elif (datetime.datetime.now()-datetime.datetime(*time.gmtime(os.path.getmtime(SESSION_PATH))[:6])).days>1:
-        print(negative_style("The login session have been expired and is login in again"))
-        print(neutral_style("Login in again"))
+    elif (datetime.datetime.now() - datetime.datetime(*time.gmtime(os.path.getmtime(SESSION_PATH))[:6])).days > 1:
+        print(negative_style('The login session have been expired and is login in again'))
+        print(neutral_style('Login in again'))
         login()
-
-
-
-
-
 
 
 def submit(args):
