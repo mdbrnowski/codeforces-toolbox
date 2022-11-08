@@ -1,5 +1,7 @@
 import sys
-import time
+import os
+import time,datetime
+import pickle
 
 import bs4
 import keyring
@@ -7,10 +9,27 @@ import requests
 
 from .constants import *
 
+SESSION_PATH=os.path.join(os.path.join(os.path.expanduser("~"), '.codeforces-toolbox'),"sessions")
 
-def submit(args):
-    contest, problem_letter = translate_problem_name(args.problem)
 
+def load_session(filename):
+    dbfile = open(filename, 'rb')     
+    db = pickle.load(dbfile)
+    dbfile.close()
+    return db
+
+
+
+def dump_session(session,filename):
+    if os.path.isfile(filename):
+        os.remove(filename)
+    dbfile = open(filename, 'ab')
+    pickle.dump(session, dbfile)                     
+    dbfile.close()
+    return
+
+
+def login():
     with requests.Session() as s:
         site = s.get('https://codeforces.com/enter')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
@@ -23,7 +42,30 @@ def submit(args):
         if bs4.BeautifulSoup(login_response.content, 'html.parser').select_one('span.error.for__password') is not None:
             print(error_style('Invalid username or password.'))
             sys.exit()
+        # removing session as it is expired
+        if os.path.isfile(SESSION_PATH):
+            os.remove(SESSION_PATH)
+        dump_session(s,SESSION_PATH)
 
+
+def check_time():
+    if os.path.isfile(SESSION_PATH)==False:
+        login()
+    elif (datetime.datetime.now()-datetime.datetime(*time.gmtime(os.path.getmtime(SESSION_PATH))[:6])).days>1:
+        print(negative_style("The login session have been expired and is login in again"))
+        print(neutral_style("Login in again"))
+        login()
+
+
+
+
+
+
+
+def submit(args):
+    contest, problem_letter = translate_problem_name(args.problem)
+    check_time()
+    with load_session(SESSION_PATH) as s:
         site = s.get(f'https://codeforces.com/contest/{contest}/submit')
         soup = bs4.BeautifulSoup(site.content, 'html.parser')
         csrf_token = soup.select_one('.csrf-token')['data-csrf']
@@ -37,7 +79,7 @@ def submit(args):
         if bs4.BeautifulSoup(submit_response.content, 'html.parser').select_one('span.error.for__source') is not None:
             print(error_style('You have submitted exactly the same code before.'))
             sys.exit()
-
+        username = get_config('username')
         print(info_style('Solution has been submitted.'))
         print('Verdict:')
         while True:
