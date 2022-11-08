@@ -1,5 +1,5 @@
 import time
-import datetime
+from datetime import datetime
 import pickle
 
 import bs4
@@ -47,11 +47,8 @@ def login():
 
 
 def check_time():
-    if os.path.isfile(SESSION_PATH) is False:
-        login()
-    elif (datetime.datetime.now() - datetime.datetime(*time.gmtime(os.path.getmtime(SESSION_PATH))[:6])).days > 1:
-        print(negative_style('The login session have been expired and is login in again'))
-        print(neutral_style('Login in again'))
+    if os.path.isfile(SESSION_PATH) is False or\
+            (datetime.now() - datetime(*time.gmtime(os.path.getmtime(SESSION_PATH))[:6])).days >= 1:
         login()
 
 
