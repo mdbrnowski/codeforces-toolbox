@@ -1,0 +1,14 @@
+name: Check PEP8
+on: pull_request
+jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Run PEP8 Action
+        uses: quentinguidee/pep8-action@v1
+        with:
+          arguments: '--max-line-length=120'
